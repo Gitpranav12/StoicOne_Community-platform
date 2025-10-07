@@ -247,14 +247,13 @@ export default function EventsUserPage() {
                     </p>
 
                     {contest.status === "Ongoing" && (
-                   <Button
-  variant="primary"
-  className="mt-2 w-100"
-  onClick={() => navigate("/events/contest")}
->
-  <Play size={16} className="me-2" /> Join Contest
-</Button>
-
+                      <Button
+                        variant="primary"
+                        className="mt-2 w-100 d-flex align-items-center justify-content-center gap-2"
+                        onClick={() => navigate("/events/code")}
+                      >
+                        <Play size={16} /> Join Contest
+                      </Button>
                     )}
                   </Card.Body>
                 </Card>
