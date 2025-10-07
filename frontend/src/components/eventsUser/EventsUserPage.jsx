@@ -251,7 +251,7 @@ export default function EventsUserPage() {
                       <Button
                         variant="primary"
                         className="mt-2 w-100"
-                        onClick={() => navigate("/events/quiz")}
+                        onClick={() => navigate("/events/code")}
                       >
                         <Play size={16} className="me-2" /> Join Contest
                       </Button>
