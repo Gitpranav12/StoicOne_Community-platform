@@ -37,9 +37,9 @@ import CollectivesAdmin from "./components/adminDashboard/pages/CollectivesAdmin
 import AnalyticsAdmin from "./components/adminDashboard/pages/AnalyticsAdmin";
 import EventsAdminPage from "./components/adminEvents/EventsAdminPage";
 import EventsUserPage from "./components/eventsUser/EventsUserPage";
+import ContestPage from "./components/eventsUser/ContestPage";
+import ProgressPage from "./components/eventsUser/ProgressPage";
 import CodeEditorPage from "./components/eventsUser/CodeEditorPage";
-import QuizPage from "./components/quiz/QuizPage";
-
 export default function App() {
 
 
@@ -96,8 +96,9 @@ export default function App() {
 
             <Route path="/admin/events" element={<EventsAdminPage />} />
             <Route path="/events" element={<EventsUserPage />} />
+            <Route path="/events/code" element={<ContestPage />} />
+             <Route path="/events/progress" element={<ProgressPage />} />
             <Route path="/events/code" element={<CodeEditorPage />} />
-            <Route path="/events/quiz" element={<QuizPage />} />
 
           </Routes>
 

@@ -12,7 +12,6 @@ import {
 import { Calendar, Clock, Users, HelpCircle, Play } from "lucide-react";
 import Layout from "../../Layout/Layout"; // 1. Import the standard Layout
 import { useNavigate } from "react-router-dom";
-
 const dummyContests = [
   {
     id: 1,
@@ -248,13 +247,14 @@ export default function EventsUserPage() {
                     </p>
 
                     {contest.status === "Ongoing" && (
-                      <Button
-                        variant="primary"
-                        className="mt-2 w-100"
-                        onClick={() => navigate("/events/code")}
-                      >
-                        <Play size={16} className="me-2" /> Join Contest
-                      </Button>
+                   <Button
+  variant="primary"
+  className="mt-2 w-100"
+  onClick={() => navigate("/events/code")}
+>
+  <Play size={16} className="me-2" /> Join Contest
+</Button>
+
                     )}
                   </Card.Body>
                 </Card>
