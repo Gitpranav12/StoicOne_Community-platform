@@ -214,7 +214,7 @@ export default function CodeEditorPage() {
                   <FaCode className="text-white" size={20} />
                 </div>
                 <h1 className="h4 mb-0 text-primary fw-bold">
-                  CodeExam
+                  Stoic Browser
                 </h1>
               </div>
               <div className="vr"></div>
