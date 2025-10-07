@@ -273,7 +273,14 @@ export default function ProgressPage() {
                                 <Button
                                   variant="success"
                                   size="sm"
-                                  onClick={() => navigate(`/events/code/${problem.id}`)}
+                                  // onClick={() => navigate(`/events/code/${problem.id}`)}
+                                  onClick={() =>
+                                    navigate(
+                                      problem.type === "Coding"
+                                        ? "/events/code"
+                                        : "/events/quiz"
+                                    )
+                                  }
                                   style={{
                                     backgroundColor: "#28a745",
                                     borderColor: "#28a745",
