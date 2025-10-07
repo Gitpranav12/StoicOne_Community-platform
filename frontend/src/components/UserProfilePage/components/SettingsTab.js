@@ -61,7 +61,7 @@ export default function SettingsTab() {
     }
 
     if (file.size > maxSize) {
-      showToast("File size must be less than 500KB!", "danger");
+      showToast("File size must be less than 2MB!", "danger");
       e.target.value = "";
       return;
     }
@@ -224,7 +224,7 @@ export default function SettingsTab() {
               </div>
 
               <Form.Text className="text-muted">
-                Only JPG/JPEG files allowed. Max size 500KB.
+                Only JPG/JPEG files allowed. Max size 2MB.
               </Form.Text>
             </Form.Group>
 
