@@ -41,7 +41,11 @@ import ContestPage from "./components/eventsUser/ContestPage";
 import ProgressPage from "./components/eventsUser/ProgressPage";
 import CodeEditorPage from "./components/eventsUser/CodeEditorPage";
 import QuizPage from "./components/quiz/QuizPage";
+ 
 import ProtectedRoute from "./ProtectedRoute";
+ 
+import ScoreCard from "./components/quiz/ScoreCard";
+ 
 export default function App() {
 
 
@@ -96,17 +100,19 @@ export default function App() {
             <Route path="/admin/answers" element={<ProtectedRoute><AnswersAdmin /></ProtectedRoute>} />
 
             <Route path="/users/:id/*" element={<ProtectedRoute><UserPublicProfile /></ProtectedRoute>} />
-
+ 
             <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
             <Route path="/events" element={<ProtectedRoute><EventsUserPage /></ProtectedRoute>} />
             <Route path="/events/contest" element={<ProtectedRoute><ContestPage /></ProtectedRoute>} />
              <Route path="/events/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
             <Route path="/events/code" element={<ProtectedRoute><CodeEditorPage /></ProtectedRoute>} />
             <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+ 
+            
+            <Route path="/scorecard" element={<ScoreCard />} />
+ 
 
           </Routes>
-
-
 
         </Router>
       </CollectivesProvider>

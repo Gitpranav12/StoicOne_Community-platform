@@ -76,16 +76,18 @@ export default function AchievementsTab({ user: propUser, loading: propLoading }
         {milestones.map((m) => (
           <div key={m.id} className="col-md-6 mb-3">
             <div className="card h-100 p-3 text-center shadow-sm position-relative">
-              <div className="position-relative">
-                <span
-                  className="fs-2"
+              <div className="position-relative d-flex justify-content-center">
+                <img
+                  src={`http://localhost:8080${m.icon}`}
+                  alt={m.name}
                   style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "contain",
                     filter: m.achieved ? "none" : "blur(2px)",
                     transition: "filter 0.3s",
                   }}
-                >
-                  {m.icon || "🏅"} {/* icon from DB */}
-                </span>
+                />
                 {!m.achieved && (
                   <FaLock
                     className="position-absolute"

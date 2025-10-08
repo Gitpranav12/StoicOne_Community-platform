@@ -66,13 +66,15 @@ function ProfileTab({ user: propUser, loading: propLoading }) {
 
       {/* Stats Section */}
       <div className="stats-section mb-5">
-        <h4 className="fw-bold mb-4 text-gradient"><i class="bi bi-bar-chart-fill"></i> Stats</h4>
-        <div className="row g-4">
+        <h4 className="fw-bold mb-4 text-gradient">
+          <i className="bi bi-bar-chart-fill"></i> Stats
+        </h4>
+        <div className="row g-4 justify-content-center">
           {user?.stats &&
             Object.entries(user.stats).map(([key, value], index) => (
               <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={index}>
-                <div className="card border rounded-4 stat-card h-100 text-center p-3 hover-zoom">
-                  <h5 className="fw-bold text-primary">{value}</h5>
+                <div className="card border rounded-4 stat-card h-100 d-flex flex-column align-items-center justify-content-center text-center p-3 hover-zoom">
+                  <h5 className="fw-bold text-primary mb-2">{value}</h5>
                   <span className="badge bg-light text-dark">{key}</span>
                 </div>
               </div>
