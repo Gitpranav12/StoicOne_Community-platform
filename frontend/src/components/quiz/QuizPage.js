@@ -105,6 +105,7 @@ export default function Quiz() {
       <SubmitPopup
         show={showSubmit}
         total={totalQuestions}
+        answers={answers} 
         answered={Object.keys(answers).length}
         onReview={handleReview}
         onSubmit={handleFinalSubmit}

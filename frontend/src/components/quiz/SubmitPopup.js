@@ -1,15 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SubmitPopup({ show, total, answered, onReview, onSubmit }) {
+export default function SubmitPopup({ show, total, answered, onReview, onSubmit,answers }) {
   const navigate = useNavigate();
 
   if (!show) return null;
 
-  const handleSubmit = () => {
-    if (onSubmit) onSubmit();
-    navigate("/events"); // redirect after submit
-  };
+const handleSubmit = () => {
+  if (onSubmit) onSubmit();
+  // answers prop is passed down from QuizPage
+  navigate("/scorecard", { state: { answers } });
+};
+
 
   return (
     <div

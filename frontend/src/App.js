@@ -41,6 +41,7 @@ import ContestPage from "./components/eventsUser/ContestPage";
 import ProgressPage from "./components/eventsUser/ProgressPage";
 import CodeEditorPage from "./components/eventsUser/CodeEditorPage";
 import QuizPage from "./components/quiz/QuizPage";
+import ScoreCard from "./components/quiz/ScoreCard";
 export default function App() {
 
 
@@ -101,10 +102,9 @@ export default function App() {
              <Route path="/events/progress" element={<ProgressPage />} />
             <Route path="/events/code" element={<CodeEditorPage />} />
             <Route path="/events/quiz" element={<QuizPage />} />
+            <Route path="/scorecard" element={<ScoreCard />} />
 
           </Routes>
-
-
 
         </Router>
       </CollectivesProvider>
