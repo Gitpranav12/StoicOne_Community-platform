@@ -178,7 +178,7 @@ const Signup = () => {
                         </button>
                     </form>
 
-                    <button
+                    {/* <button
                         className="btn btn-light w-100 border d-flex align-items-center justify-content-center gap-2"
                         onClick={googleAuth}
                     >
@@ -187,14 +187,14 @@ const Signup = () => {
                             style={{ fontSize: "1.3rem", color: "#DB4437" }}
                         ></i>
                         <span>Sign up with Google</span>
-                    </button>
+                    </button> */}
 
                     <div className="text-center mt-3">
                         Already have an account?{" "}
                         <Link to="/" style={{ color: "#0d6efd", fontWeight: "500" }}>
                             Log In
                         </Link>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>

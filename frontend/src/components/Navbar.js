@@ -16,7 +16,7 @@ const Navbar = ({ toggleSidebar }) => {
   const [showProducts, setShowProducts] = useState(false);
   const productsRef = useRef(null);
 
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const searchRef = useRef(null);
@@ -27,12 +27,13 @@ const profilePhotoUrl = id
   ? `http://localhost:8080/api/user/${id}/profile-photo?${user?.photoUpdatedAt || Date.now()}`
   : "https://i.pravatar.cc/112?img=1";
 
-  const handleLogout = () => {
-    // Clear user token from storage
-    localStorage.removeItem("token");
-    // Redirect to the login/home page
-    window.location.href = "/";
-  };
+ const handleLogout = () => {
+  localStorage.removeItem("token");          // token clear
+  localStorage.removeItem("currentUser");    // currentUser clear
+  setUser(null);                              // context clear
+  window.location.href = "/login";           // login page redirect
+};
+
 
     useEffect(() => {
     if (query.trim() !== "") {
@@ -225,9 +226,10 @@ const profilePhotoUrl = id
             <i className="bi bi-person-circle fs-4"></i>
           )}
         </Link>
-        <div className={styles.icon} onClick={handleLogout}>
-          <i className="bi bi-box-arrow-in-right fs-3 text-danger"></i>
-        </div>
+       <div className={styles.icon} onClick={handleLogout} title="Logout">
+  <i className="bi bi-box-arrow-in-right fs-3 text-danger"></i>
+</div>
+
       </div>
 
     </header>
