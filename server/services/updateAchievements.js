@@ -95,12 +95,14 @@ async function updateAchievements(userId) {
 
   // 🔹 Milestones rules with descriptions
   const milestonesRules = [
-    { name: "Expert", type: "answers", requirement: 100, description: "100 answers given" },
+    { name: "Contributor", type: "answers", requirement: 100, description: "100 answers given" },
     { name: "Mentor", type: "answers", requirement: 500, description: "500 answers given" },
-    { name: "Elite", type: "answers", requirement: 1000, description: "1000 answers given" },
-    { name: "Knowledge Seeker", type: "questions", requirement: 100, description: "100 questions asked" },
-    { name: "Rising Star", type: "badges", requirement: 10, description: "10 badges achieved" },
-    { name: "Explorer", type: "comments", requirement: 500, description: "500 comments made" },
+    { name: "Expert", type: "answers", requirement: 1000, description: "1000 answers given" },
+    { name: "Elite", type: "answers", requirement: 10000, description: "10000 answers given" },
+    { name: "Explorer", type: "questions", requirement: 100, description: "100 questions asked" },
+    { name: "Innovator", type: "questions", requirement: 1000, description: "1000 questions asked" },
+    { name: "Victory", type: "badges", requirement: 10, description: "10 badges achieved" },
+    { name: "Master", type: "comments", requirement: 500, description: "500 comments made" },
   ];
 
   const milestonesWithProgress = [];

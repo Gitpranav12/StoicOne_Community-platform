@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const router = express.Router();
 const updateAchievements = require('../services/updateAchievements.js')
+const seedAchievementsForUser = require('../services/seedAchievementsForUser.js')
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -12,7 +13,8 @@ const upload = multer({ storage: storage });
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        await updateAchievements(id); //.......
+        await updateAchievements(id);
+        await seedAchievementsForUser(id);
         const [user] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
         if (user.length === 0) return res.status(404).json({ error: "User not found" });
 
@@ -54,27 +56,41 @@ router.get("/:id", async (req, res) => {
 
         const badgeCount = badgeRow.badgeCount || 0;
         const badgePoints = badgeCount * 10;
+
+        // Notifications (to fetch milestones points earned)
+        const [[milestoneRow]] = await pool.query(
+            `SELECT COUNT(*) AS milestoneCount
+   FROM notifications
+   WHERE user_id=? AND type='milestone'`,
+            [id]
+        );
+        const milestoneCount = milestoneRow.milestoneCount || 0;
+        const milestonePoints = milestoneCount * 50;
+
+
+        // highest question views
         const qViews = questions.length > 0
             ? Math.max(...questions.map(q => q.views || 0))
-            : 0; //......
+            : 0;
+
         // Stats with safe defaults
         const stats = {
-            badges: badges?.filter(b => b.achieved === 1).length || 0,
-            milestones: milestones?.filter(b => b.achieved === 1).length || 0,
-            questions: questions?.length || 0,
-            answers: answers?.length || 0,
-            comments: commentsCount,
-            contribution: (questions?.length || 0) + (answers?.length || 0),
+            Badges: badges?.filter(b => b.achieved === 1).length || 0,
+            Milestones: milestones?.filter(b => b.achieved === 1).length || 0,
+            Questions: questions?.length || 0,
+            Answers: answers?.length || 0,
+            Comments: commentsCount,
+            Contribution: (questions?.length || 0) + (answers?.length || 0),
         };
 
-
         const score =
-            stats.badges +
-            stats.milestones +
-            stats.questions +
-            stats.answers +
-            stats.comments +
-            badgePoints;
+            stats.Badges +
+            stats.Milestones +
+            stats.Questions +
+            stats.Answers +
+            stats.Comments +
+            badgePoints +
+            milestonePoints;
 
         await pool.query("UPDATE users SET score=? WHERE id=?", [score, id]);
 
@@ -155,22 +171,22 @@ router.get("/:id", async (req, res) => {
                 let progress = 0;
                 switch (item.type) {
                     case "questions":
-                        progress = Math.min((stats.questions / item.requirement) * 100, 100);
+                        progress = Math.min((stats.Questions / item.requirement) * 100, 100);
                         break;
                     case "answers":
-                        progress = Math.min((stats.answers / item.requirement) * 100, 100);
+                        progress = Math.min((stats.Answers / item.requirement) * 100, 100);
                         break;
                     case "comments":
-                        progress = Math.min((stats.comments / item.requirement) * 100, 100);
+                        progress = Math.min((stats.Comments / item.requirement) * 100, 100);
                         break;
                     case "views":
                         progress = Math.min((qViews / item.requirement) * 100, 100);
                         break;
                     case "badges":
-                        progress = Math.min((stats.badges / item.requirement) * 100, 100);
+                        progress = Math.min((stats.Badges / item.requirement) * 100, 100);
                         break;
                 }
-                return { ...item, progress: Math.round(progress) };
+                return { ...item, progress: parseFloat(progress.toFixed(2)) };
             });
         // await updateAchievements(id);
 

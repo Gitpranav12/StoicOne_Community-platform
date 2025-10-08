@@ -63,6 +63,8 @@ app.use("/api/users", usersRoutes);
 app.use("/api/admin", adminsRoutes);
 app.use("/api/notifications", notifications);
 app.use("/api/notificationsQuestions", notificationsQuestions);
+app.use("/icons", express.static("public/icons"));
+
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

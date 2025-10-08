@@ -1,7 +1,6 @@
 const pool = require("../db");
 
 async function seedAchievementsForUser(userId) {
-  // 🔹 Badges with description and icon
   const badgesRules = [
     { name: "Participation", type: "questions", requirement: 3, description: "Asked 3 questions", icon: "📝" },
     { name: "Curious Mind", type: "questions", requirement: 10, description: "Asked 10 questions", icon: "🤔" },
@@ -19,29 +18,58 @@ async function seedAchievementsForUser(userId) {
     { name: "Popular Question", type: "views", requirement: 1000, description: "Question received 1000 views", icon: "🔥" },
   ];
 
-  // 🔹 Milestones with description and icon
   const milestonesRules = [
-    { name: "Expert", type: "answers", requirement: 100, description: "Answered 100 questions", icon: "🏅" },
-    { name: "Mentor", type: "answers", requirement: 500, description: "Answered 500 questions", icon: "🥇" },
-    { name: "Elite", type: "answers", requirement: 1000, description: "Answered 1000 questions", icon: "💎" },
-    { name: "Knowledge Seeker", type: "questions", requirement: 100, description: "Asked 100 questions", icon: "📚" },
-    { name: "Rising Star", type: "badges", requirement: 10, description: "Unlocked 10 badges", icon: "🌟" },
-    { name: "Explorer", type: "comments", requirement: 500, description: "Posted 500 comments", icon: "🧭" },
+    { name: "Contributor", type: "answers", requirement: 100, description: "Answered 100 questions", icon: "/icons/contributor.png" },
+    { name: "Mentor", type: "answers", requirement: 500, description: "Answered 500 questions", icon: "/icons/mentor.png" },
+    { name: "Expert", type: "answers", requirement: 1000, description: "Answered 1000 questions", icon: "/icons/expert.png" },
+    { name: "Elite", type: "answers", requirement: 10000, description: "Answered 10000 questions", icon: "/icons/elite.png" },
+    { name: "Explorer", type: "questions", requirement: 100, description: "Asked 100 questions", icon: "/icons/explorer.png" },
+    { name: "Innovator", type: "questions", requirement: 1000, description: "Asked 1000 questions", icon: "/icons/Innovator.png" },
+    { name: "Victory", type: "badges", requirement: 10, description: "Unlocked 10 badges", icon: "/icons/victory.png" },
+    { name: "Master", type: "comments", requirement: 500, description: "Posted 500 comments", icon: "/icons/master.png" },
   ];
 
-  for (const badge of badgesRules) {
-    await pool.query(
-      "INSERT IGNORE INTO badges (user_id, name, type, requirement, description, icon, achieved) VALUES (?,?,?,?,?,?,0)",
-      [userId, badge.name, badge.type, badge.requirement, badge.description, badge.icon]
-    );
+  // ✅ Generic function to insert or update rules dynamically
+  async function upsertRule(table, userId, rule) {
+    try {
+      const [rows] = await pool.query(
+        `SELECT id FROM ${table} WHERE user_id = ? AND name = ?`,
+        [userId, rule.name]
+      );
+
+      if (rows.length === 0) {
+        // 🔹 Insert new rule if not exists
+        await pool.query(
+          `INSERT INTO ${table} 
+            (user_id, name, type, requirement, description, icon, achieved)
+           VALUES (?, ?, ?, ?, ?, ?, 0)`,
+          [userId, rule.name, rule.type, rule.requirement, rule.description, rule.icon]
+        );
+      } else {
+        // 🔹 Update existing rule fields if changed
+        await pool.query(
+          `UPDATE ${table} 
+             SET type = ?, requirement = ?, description = ?, icon = ?
+           WHERE user_id = ? AND name = ?`,
+          [rule.type, rule.requirement, rule.description, rule.icon, userId, rule.name]
+        );
+      }
+    } catch (err) {
+      console.error(`❌ Error upserting ${rule.name} in ${table}:`, err.message);
+    }
   }
 
-  for (const ms of milestonesRules) {
-    await pool.query(
-      "INSERT IGNORE INTO milestones (user_id, name, type, requirement, description, icon, achieved) VALUES (?,?,?,?,?,?,0)",
-      [userId, ms.name, ms.type, ms.requirement, ms.description, ms.icon]
-    );
+  // 🔹 Process badges
+  for (const badge of badgesRules) {
+    await upsertRule("badges", userId, badge);
   }
+
+  // 🔹 Process milestones
+  for (const ms of milestonesRules) {
+    await upsertRule("milestones", userId, ms);
+  }
+
+  console.log(`✅ Achievements seeded/updated successfully for user ${userId}`);
 }
 
 module.exports = seedAchievementsForUser;

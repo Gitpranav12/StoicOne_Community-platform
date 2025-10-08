@@ -46,7 +46,7 @@ function ProfileHeader({ user: propUser, loading: propLoading }) {
             <div className="ms-3">
               <h4 className="mb-0"> {name || "Unnamed User"}
                 <span className="badge bg-secondary ms-2">
-                  <i className={user.profile.reputation.icon}></i> {user.profile.reputation.name}
+                   {user.profile.reputation.name}
                 </span>
               </h4>
               <p className="mb-1 text-muted">{designation || "No designation"}</p>
