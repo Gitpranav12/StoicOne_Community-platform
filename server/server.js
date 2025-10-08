@@ -17,6 +17,7 @@ const adminsRoutes = require("./routes/admin");
 const notifications = require("./routes/notificationsAchievements.js")
 const notificationsQuestions = require("./routes/notificationsQuestions.js");
 const searchRouter = require('./routes/search.js');
+const eventsContest = require('./routes/eventsContest.js');
 
 const app = express();
 const db = require("./db");
@@ -65,6 +66,8 @@ app.use("/api/notifications", notifications);
 app.use("/api/notificationsQuestions", notificationsQuestions);
 app.use("/icons", express.static("public/icons"));
 
+
+app.use("/api/contests", eventsContest);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
