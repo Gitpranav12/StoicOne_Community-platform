@@ -93,7 +93,6 @@ export default function ProgressPage() {
 
   return (
     <Layout>
-      <div className="container py-5">
         {/* ---------- Header ---------- */}
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
           {/* Left Section: Title + Icon */}
@@ -172,8 +171,6 @@ export default function ProgressPage() {
         {/* ---------- Combined Categories and Problems Card ---------- */}
         <Row className="justify-content-center">
           <Col md={12}>
-            <Card className="shadow-sm border-0">
-              <Card.Body className="p-0">
                 <Row className="g-0">
                   {/* Categories Section */}
                   <Col md={3} className="border-end">
@@ -297,11 +294,8 @@ export default function ProgressPage() {
                     </div>
                   </Col>
                 </Row>
-              </Card.Body>
-            </Card>
           </Col>
         </Row>
-      </div>
     </Layout>
   );
 }

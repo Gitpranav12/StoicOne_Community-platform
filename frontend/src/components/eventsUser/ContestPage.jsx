@@ -12,9 +12,7 @@ export default function ContestPage() {
   };
   return (
     <Layout>
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light p-4">
-      <Card className="h-100 w-100" style={{ maxWidth: "1000px" }}>
-        <Card.Body>
+  <div className="px-4 py-4">
           <div className="text-center mb-4">
             <div
               className="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-4"
@@ -190,9 +188,7 @@ export default function ContestPage() {
   Start Contest
 </Button>
           </div>
-        </Card.Body>
-      </Card>
-    </div>
+      </div>
     </Layout>
   );
 }
