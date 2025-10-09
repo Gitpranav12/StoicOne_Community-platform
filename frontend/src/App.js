@@ -26,7 +26,7 @@ import WhyEditPosts from './components/help/WhyEditPosts';
 import ExploreCollectives from './components/collectives/ExploreCollectives';
 import { CollectivesProvider } from './components/collectives/CollectivesContext';
 import CollectivesPage from "./components/collectives/CollectivePage";
-
+import Productpage from "./components/productpage/Productpage";
 // Admin Dashboard pages
 
 import UsersAdmin from "./components/adminDashboard/pages/UsersAdmin";
@@ -110,7 +110,9 @@ export default function App() {
  
             
             <Route path="/scorecard" element={<ScoreCard />} />
- 
+
+            {/* Product Page */}
+            <Route path="/product" element={<Productpage />} />
 
           </Routes>
 
