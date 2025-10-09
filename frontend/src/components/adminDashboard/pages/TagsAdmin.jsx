@@ -21,6 +21,7 @@ import {
 import { Label } from "../ui/label";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import Layout from "../../../Layout/Layout";
+import toast from "react-hot-toast";
 
 import { useCustomAlert } from "../../customAlert/useCustomAlert";
 
@@ -29,6 +30,7 @@ export default function TagsAdmin() {
   const [loading, setLoading] = useState(true);
   const [newTagName, setNewTagName] = useState("");
   const [newTagDescription, setNewTagDescription] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false); // ✅ control Add Tag dialog
   const [editTag, setEditTag] = useState(null);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
@@ -67,9 +69,12 @@ export default function TagsAdmin() {
         await fetchTags(); // refresh after adding
         setNewTagName("");
         setNewTagDescription("");
+        setIsAddDialogOpen(false); // ✅ Close dialog after success
+        toast.success("Tag Added successfully!");
       }
     } catch (err) {
       console.error("Error adding tag:", err);
+      toast.error("Failed to Add tag.");
     }
   };
 
@@ -84,9 +89,11 @@ export default function TagsAdmin() {
       if (res.ok) {
         await fetchTags();
         setEditTag(null); // close modal
+        toast.success("Tag Updated successfully!");
       }
     } catch (err) {
       console.error("Error updating tag:", err);
+      toast.error("Failed to updating tag.");
     }
   };
 
@@ -102,15 +109,12 @@ export default function TagsAdmin() {
 
           if (res.ok) {
             await fetchTags();
+              toast.success("Tag deleted successfully!");
           }
         } catch (err) {
           console.error("Error deleting tag:", err);
           // Optional: show an error alert
-          showAlert({
-            title: "Error",
-            message: "Failed to delete tag.",
-            onConfirm: () => {},
-          });
+         toast.error("Failed to delete tag.");
         }
       },
     });
@@ -124,7 +128,8 @@ export default function TagsAdmin() {
         {/* <div className="tags-header flex justify-between items-center mb-6"> */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-3">
           <h1 className="text-2xl">Tags Management</h1>
-          <Dialog>
+         
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button>
                 <Plus className="h-4 w-4 mr-2" />

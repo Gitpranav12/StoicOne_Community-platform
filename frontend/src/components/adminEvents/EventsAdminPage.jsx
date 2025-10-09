@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AdminEvents from "./AdminEvents";
 import Layout from "../../Layout/Layout";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function EventsAdminPage() {
   const [contests, setContests] = useState([]);
@@ -65,15 +66,19 @@ export default function EventsAdminPage() {
 
   // Delete contest
   const handleDeleteContest = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:8080/api/contests/${id}`);
-      if (response.data.success) {
-        setContests(contests.filter((contest) => contest.id !== id));
-      }
-    } catch (error) {
-      console.error("Error deleting contest:", error);
+  try {
+    const response = await axios.delete(`http://localhost:8080/api/contests/${id}`);
+    if (response.data.success) {
+      setContests(contests.filter((contest) => contest.id !== id));
+
+       toast.success("Contest deleted successfully!");
     }
-  };
+  } catch (error) {
+    console.error("Error deleting contest:", error);
+    toast.error("Error deleting contest!");
+  }
+};
+
 
   return (
     <Layout>

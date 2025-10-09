@@ -26,6 +26,7 @@ import WhyEditPosts from './components/help/WhyEditPosts';
 import ExploreCollectives from './components/collectives/ExploreCollectives';
 import { CollectivesProvider } from './components/collectives/CollectivesContext';
 import CollectivesPage from "./components/collectives/CollectivePage";
+import Productpage from "./components/productpage/Productpage";
 
 // Admin Dashboard pages
 
@@ -35,84 +36,119 @@ import AnswersAdmin from "./components/adminDashboard/pages/AnswersAdmin";
 import TagsAdmin from "./components/adminDashboard/pages/TagsAdmin";
 import CollectivesAdmin from "./components/adminDashboard/pages/CollectivesAdmin";
 import AnalyticsAdmin from "./components/adminDashboard/pages/AnalyticsAdmin";
-import EventsAdminPage from "./components/adminEvents/EventsAdminPage";
+
 import EventsUserPage from "./components/eventsUser/EventsUserPage";
 import ContestPage from "./components/eventsUser/ContestPage";
 import ProgressPage from "./components/eventsUser/ProgressPage";
 import CodeEditorPage from "./components/eventsUser/CodeEditorPage";
 import QuizPage from "./components/quiz/QuizPage";
-import ScoreCard from "./components/quiz/ScoreCard";
+
+import ProtectedRoute from "./ProtectedRoute";
+
+// admin events pages
+import EventsAdminPage from "./components/adminEvents/EventsAdminPage";
+import CreateContestForm from "./components/adminEvents/CreateContestForm";
+import ContestDetails from "./components/adminEvents/ContestDetails";
+import { Toaster } from 'react-hot-toast';
+
 export default function App() {
 
 
   return (
-    <UserProvider>
-      <CollectivesProvider>
-        <Router>
+    <>
+      <Toaster
+        position="top-center" // top-center of screen
+        reverseOrder={false}
+        toastOptions={{
+          style: {
+            background: '#f9f9f9', // light gray
+            color: '#333',
+            minWidth: '250px',
+          },
+        }}
+      />
 
-          {/* <Routes>
-         
+      <UserProvider>
+        <CollectivesProvider>
+          <Router>
+
+            {/* <Routes>
+      
           <Route path="/questions" element={<Questions />} />
           <Route path="/tags" element={<Tags />} />
           <Route path="/chat" element={<Chat />} />
         </Routes> */}
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* home */}
-            <Route path="/dashboard" element={<DashboardHome />} />
-            <Route path="/admin-dashboard" element={<DashboardHomeAdmin />} />
-            {/* Admin Dashboard with nested tabs
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/Signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {/* home */}
+              <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
+              <Route path="/admin-dashboard" element={<ProtectedRoute><DashboardHomeAdmin /></ProtectedRoute>} />
+              {/* Admin Dashboard with nested tabs
               <Route path="/admin/*" element={<AdminDashboardPage />} /> */}
-            {/* User */}
-            <Route path="/user" element={<UsersPage />} />
-            {/* <Route path="/moderator" element={<ModeratorPage />} /> */}
-            <Route path="/askquestion" element={<AskQuestionWrapper />} />
-            <Route path="/questions" element={<QuestionsPage />} />
-            {/* NEW: Question Details */}
-            <Route path="/questions/:id" element={<QuestionDetailsWrapper />} />
-            <Route path="/AiAssistant" element={<AiAssistant />} />
-            <Route path="/tags" element={<TagsPage />} />
-            <Route path="/Articles" element={<Articles />} />
-            {/* User profile main page */}
-            <Route path="/profile/*" element={<UserProfile />} />
+              {/* User */}
+              <Route path="/user" element={<ProtectedRoute><UsersPage /></ProtectedRoute>} />
+              {/* <Route path="/moderator" element={<ModeratorPage />} /> */}
+              <Route path="/askquestion" element={<ProtectedRoute><AskQuestionWrapper /></ProtectedRoute>} />
+              <Route path="/questions" element={<ProtectedRoute><QuestionsPage /></ProtectedRoute>} />
+              {/* NEW: Question Details */}
+              <Route path="/questions/:id" element={<ProtectedRoute><QuestionDetailsWrapper /></ProtectedRoute>} />
+              <Route path="/AiAssistant" element={<AiAssistant />} />
+              <Route path="/tags" element={<ProtectedRoute><TagsPage /></ProtectedRoute>} />
 
-            {/* Help Section */}
-            <Route path="/help/how-to-ask" element={<HowToAsk />} />
-            <Route path="/help/how-to-answer" element={<HowToAnswer />} />
-            <Route path="/help/editing" element={<WhyEditPosts />} />
-            {/* Explore all collectives */}
-            <Route path="/collectives" element={<ExploreCollectives />} />
-            <Route path="/collectives/:id" element={<CollectivesPage />} />
+              <Route path="/Articles" element={<ProtectedRoute><Articles /></ProtectedRoute>} />
+              {/* User profile main page */}
+              <Route path="/profile/*" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
 
-            {/*.......Admin Dashboard routes......  */}
-            <Route path="/admin" element={<AnalyticsAdmin />} />
-            <Route path="/admin/tags" element={<TagsAdmin />} />
-            <Route path="/admin/collectives" element={<CollectivesAdmin />} />
-            <Route path="/admin/users" element={<UsersAdmin />} />
-            <Route path="/admin/questions" element={<QuestionsAdmin />} />
-            <Route path="/admin/answers" element={<AnswersAdmin />} />
+              {/* Help Section */}
+              <Route path="/help/how-to-ask" element={<ProtectedRoute><HowToAsk /></ProtectedRoute>} />
+              <Route path="/help/how-to-answer" element={<ProtectedRoute><HowToAnswer /></ProtectedRoute>} />
+              <Route path="/help/editing" element={<ProtectedRoute><WhyEditPosts /></ProtectedRoute>} />
+              {/* Explore all collectives */}
+              <Route path="/collectives" element={<ProtectedRoute><ExploreCollectives /></ProtectedRoute>} />
+              <Route path="/collectives/:id" element={<ProtectedRoute><CollectivesPage /></ProtectedRoute>} />
 
-            <Route path="/users/:id/*" element={<UserPublicProfile />} />
+              {/*.......Admin Dashboard routes......  */}
+              <Route path="/admin" element={<ProtectedRoute><AnalyticsAdmin /></ProtectedRoute>} />
+              <Route path="/admin/tags" element={<ProtectedRoute><TagsAdmin /></ProtectedRoute>} />
+              <Route path="/admin/collectives" element={<ProtectedRoute><CollectivesAdmin /></ProtectedRoute>} />
+              <Route path="/admin/users" element={<ProtectedRoute><UsersAdmin /></ProtectedRoute>} />
+              <Route path="/admin/questions" element={<ProtectedRoute><QuestionsAdmin /></ProtectedRoute>} />
+              <Route path="/admin/answers" element={<ProtectedRoute><AnswersAdmin /></ProtectedRoute>} />
 
-            <Route path="/admin/events" element={<EventsAdminPage />} />
-            <Route path="/events" element={<EventsUserPage />} />
-            <Route path="/events/contest" element={<ContestPage />} />
-             <Route path="/events/progress" element={<ProgressPage />} />
-            <Route path="/events/code" element={<CodeEditorPage />} />
-            <Route path="/events/quiz" element={<QuizPage />} />
-            <Route path="/scorecard" element={<ScoreCard />} />
+              <Route path="/users/:id/*" element={<ProtectedRoute><UserPublicProfile /></ProtectedRoute>} />
 
-          </Routes>
+              <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
+              <Route path="/events" element={<ProtectedRoute><EventsUserPage /></ProtectedRoute>} />
+              <Route path="/events/contest" element={<ProtectedRoute><ContestPage /></ProtectedRoute>} />
+              <Route path="/events/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
+              <Route path="/events/code" element={<ProtectedRoute><CodeEditorPage /></ProtectedRoute>} />
+              <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
 
-        </Router>
-      </CollectivesProvider>
 
-    </UserProvider>
+              {/* <Route path="/scorecard" element={<ScoreCard />} /> */}
 
+              {/* Product Page */}
+              <Route path="/product" element={<Productpage />} />
+              {/* admin events pages routes */}
+              <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
+              <Route path="/admin/events/createContest" element={<ProtectedRoute><CreateContestForm /></ProtectedRoute>} />
+              <Route path="/admin/events/contestDetails" element={<ProtectedRoute><ContestDetails /></ProtectedRoute>} />
+
+            </Routes>
+
+          </Router>
+        </CollectivesProvider>
+
+      </UserProvider>
+    </>
   );
 }
+
+
+
+
 // import { Routes, Route } from "react-router-dom";
 // import { GoogleOAuthProvider } from "@react-oauth/google";
 // import Login from "./pages/Login";
@@ -127,7 +163,7 @@ export default function App() {
 //   return (
 //     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
 //       <Routes>
-//         
+//
 //         <Route
 //           path="/moderator"
 //           element={

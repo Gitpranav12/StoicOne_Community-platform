@@ -8,14 +8,17 @@ import {
   Clock,
   Trophy,
 } from "lucide-react";
+import { useCustomAlert } from "../customAlert/useCustomAlert";
 
 export default function ContestTable({
   contests,
   onSelectContest,
   onDeleteContest,
+  onEditContest,
 }) {
   const [sortField, setSortField] = useState("startDate");
   const [sortDirection, setSortDirection] = useState("desc");
+  const [showAlert, AlertComponent] = useCustomAlert();
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -25,8 +28,6 @@ export default function ContestTable({
       setSortDirection("asc");
     }
   };
-
-  
 
   const sortedContests = [...contests].sort((a, b) => {
     let aValue, bValue;
@@ -184,7 +185,12 @@ export default function ContestTable({
                     <tr key={contest.id}>
                       <td>
                         <div>
-                          <div className="fw-semibold">{contest.title}</div>
+                          <div
+                            className="fw-semibold"
+                            onClick={() => onSelectContest(contest)}
+                          >
+                            {contest.title}
+                          </div>
                           <div
                             className="text-muted small text-truncate"
                             style={{ maxWidth: "200px" }}
@@ -226,7 +232,6 @@ export default function ContestTable({
                         <div className="d-flex align-items-center">
                           <Clock size={16} className="text-muted me-2" />
                           <span className="small">{totalDuration} min</span>
-
                         </div>
                       </td>
                       <td>
@@ -246,21 +251,21 @@ export default function ContestTable({
                           </button>
                           <button
                             className="btn btn-outline-secondary btn-sm"
-                            onClick={() => onSelectContest(contest)}
+                            onClick={() => onEditContest(contest)}
                             title="Edit Contest"
                           >
                             <Edit size={16} />
                           </button>
+
                           <button
                             className="btn btn-outline-danger btn-sm"
                             onClick={() => {
-                              if (
-                                window.confirm(
-                                  "Are you sure you want to delete this contest?"
-                                )
-                              ) {
-                                onDeleteContest(contest.id);
-                              }
+                              showAlert({
+                                title: "Delete Contest",
+                                message:
+                                  "Are you sure you want to delete this contest?",
+                                onConfirm: () => onDeleteContest(contest.id),
+                              });
                             }}
                             title="Delete Contest"
                           >
@@ -286,6 +291,10 @@ export default function ContestTable({
           </div>
         )}
       </div>
+
+      {AlertComponent}
+
     </div>
+    
   );
 }

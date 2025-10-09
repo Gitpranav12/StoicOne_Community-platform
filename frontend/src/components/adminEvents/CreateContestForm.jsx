@@ -1,19 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Plus, Trash2, Upload, Edit2 } from "lucide-react";
+import Layout from "../../Layout/Layout";
+import { useNavigate, useLocation } from "react-router-dom";
+import toast from 'react-hot-toast';
 
+export default function CreateContestForm({ onSuccess }) {
+  const location = useLocation();
+  const editingContest = location.state?.contest; // 🟢 Contest being edited
 
-export default function CreateContestForm({ onSuccess, onCancel }) {
-  
+  // Helper to format date for datetime-local input
+  const formatForDateTimeLocal = (dateString) => {
+    if (!dateString) return "";
+    const d = new Date(dateString);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    banner: null,
-    startDate: "",
-    endDate: "",
-    status: "draft",
+    title: editingContest?.title || "",
+    description: editingContest?.description || "",
+    banner: editingContest?.banner || null,
+    startDate: editingContest
+      ? formatForDateTimeLocal(editingContest.startDate)
+      : "",
+    endDate: editingContest
+      ? formatForDateTimeLocal(editingContest.endDate)
+      : "",
+    status: editingContest?.status || "draft",
   });
 
-  const [rounds, setRounds] = useState([]);
+  const [rounds, setRounds] = useState(
+    (editingContest?.rounds || []).map((r) => ({
+      roundName: r.round_name || "", // <-- fix here
+      type: r.type || "quiz",
+      duration: r.duration || 30,
+      questions: (r.questions || []).map((q) => {
+        if (r.type === "quiz") {
+          return {
+            text: q.text || "",
+            options: [
+              q.option_1 || "",
+              q.option_2 || "",
+              q.option_3 || "",
+              q.option_4 || "",
+            ],
+            correctIndex: q.correct_index ?? 0,
+          };
+        } else if (r.type === "coding") {
+          return {
+            title: q.title || "",
+            description: q.description || "",
+            inputFormat: q.input_format || "",
+            outputFormat: q.output_format || "",
+            sampleInput: q.sample_input || "",
+            sampleOutput: q.sample_output || "",
+          };
+        }
+        return q;
+      }),
+    }))
+  );
+
   const [newRound, setNewRound] = useState({
     roundName: "",
     type: "quiz",
@@ -22,6 +73,12 @@ export default function CreateContestForm({ onSuccess, onCancel }) {
   });
 
   const [loading, setLoading] = useState(false);
+
+  const [editingRoundIndex, setEditingRoundIndex] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleCancel = () => navigate(-1); // ✅ Go back
 
   // Input handlers
   const handleInputChange = (e) => {
@@ -42,12 +99,47 @@ export default function CreateContestForm({ onSuccess, onCancel }) {
   // Round/Question handlers
   const addRound = () => {
     if (!newRound.roundName.trim()) return;
-    setRounds([...rounds, { ...newRound, id: `r${rounds.length + 1}` }]);
+
+    if (editingRoundIndex !== null && rounds[editingRoundIndex]) {
+      const updated = [...rounds];
+      updated[editingRoundIndex] = {
+        ...newRound,
+        id: updated[editingRoundIndex]?.id || `r${editingRoundIndex + 1}`,
+      };
+      setRounds(updated);
+      setEditingRoundIndex(null);
+    } else {
+      setRounds([...rounds, { ...newRound, id: `r${rounds.length + 1}` }]);
+    }
+
     setNewRound({ roundName: "", type: "quiz", duration: 30, questions: [] });
   };
 
-  const removeRound = (index) =>
-    setRounds(rounds.filter((_, i) => i !== index));
+  const handleEditRound = (index) => {
+    setEditingRoundIndex(index);
+    const r = rounds[index];
+    setNewRound({
+      roundName: r.roundName,
+      type: r.type,
+      duration: r.duration,
+      questions: r.questions,
+    });
+  };
+
+  const removeRound = (index) => {
+    setRounds((prev) => prev.filter((_, i) => i !== index));
+
+    // 🧹 If the deleted round was being edited, reset form and editing index
+    if (editingRoundIndex === index) {
+      setNewRound({ roundName: "", type: "quiz", duration: 30, questions: [] });
+      setEditingRoundIndex(null);
+    }
+
+    // 🧠 If you delete a round before the one you're editing, shift the index properly
+    else if (editingRoundIndex !== null && index < editingRoundIndex) {
+      setEditingRoundIndex((prev) => prev - 1);
+    }
+  };
 
   const addQuestion = (roundIndex, question) => {
     const updated = [...rounds];
@@ -73,8 +165,26 @@ export default function CreateContestForm({ onSuccess, onCancel }) {
 
     if (!formData.title) return;
     if (rounds.length === 0) {
-      alert("Please add at least one round!");
+        toast.error("Please add at least one round!");
+    
       return;
+    }
+
+    if (rounds.length === 0) {
+        toast.error("Please add at least one round!");
+      return;
+    }
+
+    // 🛑 validate each round
+    for (const [index, r] of rounds.entries()) {
+      if (!r.roundName || r.roundName.trim() === "") {
+          toast.error(`Round ${index + 1} is missing a name.`);
+        return;
+      }
+      if (!r.type) {
+          toast.error(`Round ${index + 1} type is missing.`);
+        return;
+      }
     }
 
     setLoading(true);
@@ -85,111 +195,178 @@ export default function CreateContestForm({ onSuccess, onCancel }) {
         startDate: formData.startDate,
         endDate: formData.endDate,
         status: formData.status,
-        rounds: rounds,
+        rounds: rounds.map((r) => ({
+          round_name: r.roundName,
+          type: r.type,
+          duration: r.duration,
+          questions: r.questions.map((q) => {
+            if (r.type === "quiz") {
+              return {
+                text: q.text,
+                option_1: q.options[0],
+                option_2: q.options[1],
+                option_3: q.options[2],
+                option_4: q.options[3],
+                correct_index: q.correctIndex,
+              };
+            } else if (r.type === "coding") {
+              return {
+                title: q.title,
+                description: q.description,
+                input_format: q.inputFormat,
+                output_format: q.outputFormat,
+                sample_input: q.sampleInput,
+                sample_output: q.sampleOutput,
+              };
+            }
+            return q;
+          }),
+        })),
       };
 
-      const res = await fetch("http://localhost:8080/api/contests", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(submissionData),
-      });
+      // console.log("Submitting contest data:", submissionData);
+
+      const res = await fetch(
+        editingContest
+          ? `http://localhost:8080/api/contests/${editingContest.id}`
+          : "http://localhost:8080/api/contests",
+        {
+          method: editingContest ? "PUT" : "POST", // PUT for update
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(submissionData),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create contest");
 
-      alert("Contest created successfully!");
-      onSuccess(data);
+      //  alert(`Contest ${editingContest ? "updated" : "created"} successfully!`);
+       toast.success(`Contest ${editingContest ? "updated" : "created"} successfully!`);
+      
+      // 🔒 Safe call (only if passed)
+      if (onSuccess) onSuccess(data);
+
+      // Navigate back after successful create/update
+      navigate(-1);
+
+      // clear form after successful create
+      if (!editingContest) {
+        setFormData({
+          title: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+          status: "upcoming",
+        });
+        setRounds([]);
+      }
     } catch (err) {
-      alert("Failed to create contest: " + err.message);
+     
+         toast.error("Failed to create contest: " + err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  const isFormValid = () => {
+    if (!formData.title) return false;
+    if (rounds.length === 0) return false;
+
+    // Check that at least one round has at least one question
+    const hasAtLeastOneQuestion = rounds.some((r) => r.questions.length > 0);
+
+    return hasAtLeastOneQuestion;
+  };
+
   return (
-    <div className="create-contest-form">
-      <div className="container-fluid py-4">
-        {/* Header */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div>
-            <h2 className="mb-1">Create New Contest</h2>
-            <p className="text-muted mb-0">
-              Configure a multi-round hiring event (quiz + coding)
-            </p>
-          </div>
-          {/* <button className="btn btn-outline-secondary" onClick={onCancel}>
-            <ArrowLeft size={18} className="me-2" />
-            Back
-          </button> */}
+    <Layout>
+      <div className="create-contest-form">
+        <div className="container-fluid py-4">
+          {/* Header */}
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h2 className="mb-1">
+                {editingContest ? "Edit Contest" : "Create New Contest"}
+              </h2>
+
+              <p className="text-muted mb-0">
+                Configure a multi-round hiring event (quiz + coding)
+              </p>
+            </div>
+
             <button
               className="btn btn-outline-secondary d-flex align-items-center flex-shrink-0"
-              onClick={onCancel}
+              // onClick={onCancel}
+              type="button"
+              onClick={handleCancel}
             >
               <ArrowLeft size={18} className="me-2" />
               Back
             </button>
-        </div>
+          </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-lg-8">
-              {/* Basic Info */}
-              <div className="card border-0 shadow-sm mb-4">
-                <div className="card-header bg-white">
-                  <h5 className="card-title mb-0">Basic Information</h5>
-                </div>
-                <div className="card-body">
-                  <div className="row g-3">
-                    <div className="col-12">
-                      <label className="form-label">Contest Title *</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-lg-8">
+                {/* Basic Info */}
+                <div className="card border-0 shadow-sm mb-4">
+                  <div className="card-header bg-white">
+                    <h5 className="card-title mb-0">Basic Information</h5>
+                  </div>
+                  <div className="card-body">
+                    <div className="row g-3">
+                      <div className="col-12">
+                        <label className="form-label">Contest Title *</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="title"
+                          value={formData.title}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
 
-                    <div className="col-12">
-                      <label className="form-label">Description *</label>
-                      <textarea
-                        className="form-control"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        rows="3"
-                        required
-                      />
-                    </div>
+                      <div className="col-12">
+                        <label className="form-label">Description *</label>
+                        <textarea
+                          className="form-control"
+                          name="description"
+                          value={formData.description}
+                          onChange={handleInputChange}
+                          rows="3"
+                          required
+                        />
+                      </div>
 
-                    <div className="col-md-6">
-                      <label className="form-label">Start Date & Time *</label>
-                      <input
-                        type="datetime-local"
-                        className="form-control"
-                        name="startDate"
-                        value={formData.startDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+                      <div className="col-md-6">
+                        <label className="form-label">
+                          Start Date & Time *
+                        </label>
+                        <input
+                          type="datetime-local"
+                          className="form-control"
+                          name="startDate"
+                          value={formData.startDate}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
 
-                    <div className="col-md-6">
-                      <label className="form-label">End Date & Time *</label>
-                      <input
-                        type="datetime-local"
-                        className="form-control"
-                        name="endDate"
-                        value={formData.endDate}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
+                      <div className="col-md-6">
+                        <label className="form-label">End Date & Time *</label>
+                        <input
+                          type="datetime-local"
+                          className="form-control"
+                          name="endDate"
+                          value={formData.endDate}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
 
-                    {/* banner image  */}
-                    {/* <div className="col-12">
+                      {/* banner image  */}
+                      {/* <div className="col-12">
                       <label className="form-label">
                         Contest Banner (optional)
                       </label>
@@ -213,174 +390,206 @@ export default function CreateContestForm({ onSuccess, onCancel }) {
                         />
                       )}
                     </div> */}
-                  </div>
-                </div>
-              </div>
-
-              {/* Rounds Section */}
-              <div className="card border-0 shadow-sm mb-4">
-                <div className="card-header bg-white">
-                  <h5 className="card-title mb-0">Rounds ({rounds.length})</h5>
-                </div>
-                <div className="card-body">
-                  {/* Add Round */}
-                  <div className="border rounded-3 p-4 mb-4 bg-light">
-                    <h6 className="mb-3">Add New Round</h6>
-                    <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label">Round Name *</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="roundName"
-                          value={newRound.roundName}
-                          onChange={handleRoundChange}
-                          placeholder="e.g., Aptitude Round"
-                        />
-                      </div>
-
-                      <div className="col-md-6">
-                        <label className="form-label">Round Type *</label>
-                        <select
-                          className="form-select"
-                          name="type"
-                          value={newRound.type}
-                          onChange={handleRoundChange}
-                        >
-                          <option value="quiz">Aptitude / Quiz</option>
-                          <option value="coding">Coding</option>
-                        </select>
-                      </div>
-
-                      <div className="col-md-4">
-                        <label className="form-label">Duration (minutes)</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          name="duration"
-                          value={newRound.duration}
-                          onChange={handleRoundChange}
-                          min="5"
-                        />
-                      </div>
-
-                      <div className="col-md-4 d-flex align-items-end">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100"
-                          onClick={addRound}
-                        >
-                          <Plus size={18} className="me-2" />
-                          Add Round
-                        </button>
-                      </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Existing Rounds */}
-                  {rounds.map((round, index) => (
-                    <div key={index} className="border rounded-3 p-3 mb-3">
-                      <div className="d-flex justify-content-between align-items-start">
-                        <div>
-                          <h6 className="mb-1">
-                            {index + 1}. {round.roundName}{" "}
-                            <span className="badge bg-secondary ms-2">
-                              {round.type}
-                            </span>
-                          </h6>
-                          <small className="text-muted">
-                            Duration: {round.duration} min |{" "}
-                            {round.type === "quiz"
-                              ? `${round.questions.length} questions`
-                              : `Coding Problems: ${round.questions.length}`}
-                          </small>
+                {/* Rounds Section */}
+                <div className="card border-0 shadow-sm mb-4">
+                  <div className="card-header bg-white">
+                    <h5 className="card-title mb-0">
+                      Rounds ({rounds.length})
+                    </h5>
+                  </div>
+                  <div className="card-body">
+                    {/* Add Round */}
+                    <div className="border rounded-3 p-4 mb-4 bg-light">
+                      <h6 className="mb-3">Add New Round</h6>
+                      <div className="row g-3">
+                        <div className="col-md-6">
+                          <label className="form-label">Round Name *</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="roundName"
+                            value={newRound.roundName}
+                            onChange={handleRoundChange}
+                            placeholder="e.g., Aptitude Round"
+                          />
                         </div>
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger btn-sm"
-                          onClick={() => removeRound(index)}
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
 
-                      <div className="mt-3 ps-2">
-                        {round.type === "quiz" ? (
-                          <QuizQuestionEditor
-                            roundIndex={index}
-                            addQuestion={addQuestion}
-                            updateQuestion={updateQuestion}
-                            removeQuestion={removeQuestion}
-                            questions={round.questions}
+                        <div className="col-md-6">
+                          <label className="form-label">Round Type *</label>
+                          <select
+                            className="form-select"
+                            name="type"
+                            value={newRound.type}
+                            onChange={handleRoundChange}
+                          >
+                            <option value="quiz">Aptitude / Quiz</option>
+                            <option value="coding">Coding</option>
+                          </select>
+                        </div>
+
+                        <div className="col-md-4">
+                          <label className="form-label">
+                            Duration (minutes)
+                          </label>
+                          <input
+                            type="number"
+                            className="form-control"
+                            name="duration"
+                            value={newRound.duration}
+                            onChange={handleRoundChange}
+                            min="5"
                           />
-                        ) : (
-                          <CodingQuestionEditor
-                            roundIndex={index}
-                            addQuestion={addQuestion}
-                            updateQuestion={updateQuestion}
-                            removeQuestion={removeQuestion}
-                            questions={round.questions}
-                          />
-                        )}
+                        </div>
+
+                        <div className="col-md-4 d-flex align-items-end">
+                          <button
+                            type="button"
+                            className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2 shadow-sm rounded-3 py-2"
+                            onClick={addRound}
+                            style={{
+                              fontWeight: "500",
+                              transition: "all 0.2s ease-in-out",
+                            }}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.style.boxShadow =
+                                "0 0 10px rgba(13,110,253,0.4)")
+                            }
+                            onMouseOut={(e) =>
+                              (e.currentTarget.style.boxShadow =
+                                "0 0 0 rgba(0,0,0,0)")
+                            }
+                          >
+                            <Plus size={18} />
+                            Add Round
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  ))}
+
+                    {/* Existing Rounds */}
+                    {rounds.map((round, index) => (
+                      <div key={index} className="border rounded-3 p-3 mb-3">
+                        <div className="d-flex justify-content-between align-items-center  rounded p-2 mb-2 ">
+                          {/* Left Section - Round Info */}
+                          <div>
+                            <h6 className="mb-1">
+                              {index + 1}. {round.roundName}{" "}
+                              <span className="badge bg-secondary ms-2">
+                                {round.type}
+                              </span>
+                            </h6>
+                            <small className="text-muted">
+                              Duration: {round.duration} min |{" "}
+                              {round.type === "quiz"
+                                ? `${round.questions.length} questions`
+                                : `Coding Problems: ${round.questions.length}`}
+                            </small>
+                          </div>
+
+                          {/* Right Section - Buttons */}
+                          <div className="d-flex gap-2">
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-primary"
+                              onClick={() => handleEditRound(index)}
+                              title="Edit Round"
+                            >
+                              <Edit2 size={16} />
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => removeRound(index)}
+                              title="Delete Round"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 ps-2">
+                          {round.type === "quiz" ? (
+                            <QuizQuestionEditor
+                              roundIndex={index}
+                              addQuestion={addQuestion}
+                              updateQuestion={updateQuestion}
+                              removeQuestion={removeQuestion}
+                              questions={round.questions}
+                            />
+                          ) : (
+                            <CodingQuestionEditor
+                              roundIndex={index}
+                              addQuestion={addQuestion}
+                              updateQuestion={updateQuestion}
+                              removeQuestion={removeQuestion}
+                              questions={round.questions}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Sidebar */}
+              <div className="col-lg-4">
+                <div className="card border-0 shadow-sm">
+                  <div className="card-header bg-white">
+                    <h5 className="card-title mb-0">Contest Settings</h5>
+                  </div>
+                  <div className="card-body">
+                    <div className="mb-3">
+                      <label className="form-label">Status</label>
+                      <select
+                        className="form-select"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleInputChange}
+                      >
+                        <option value="draft">Draft</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="active">Active</option>
+                      </select>
+                    </div>
+
+                    <div className="d-grid gap-2">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={loading || !isFormValid()}
+                      >
+                        {/* {loading ? "Submitting..." : "Create Contest"} */}
+                        {editingContest ? "Update Contest" : "Create Contest"}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        // onClick={onCancel}
+                        onClick={handleCancel}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Sidebar */}
-            <div className="col-lg-4">
-              <div className="card border-0 shadow-sm">
-                <div className="card-header bg-white">
-                  <h5 className="card-title mb-0">Contest Settings</h5>
-                </div>
-                <div className="card-body">
-                  <div className="mb-3">
-                    <label className="form-label">Status</label>
-                    <select
-                      className="form-select"
-                      name="status"
-                      value={formData.status}
-                      onChange={handleInputChange}
-                    >
-                      <option value="draft">Draft</option>
-                      <option value="upcoming">Upcoming</option>
-                      <option value="active">Active</option>
-                    </select>
-                  </div>
-
-                  <div className="d-grid gap-2">
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={
-                        !formData.title || rounds.length === 0 || loading
-                      }
-                    >
-                      {loading ? "Submitting..." : "Create Contest"}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={onCancel}
-                      disabled={loading}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 
 /* -------------------------------
-   QUIZ QUESTION EDITOR COMPONENT
+  QUIZ QUESTION EDITOR COMPONENT
 ---------------------------------*/
 function QuizQuestionEditor({
   roundIndex,
@@ -396,6 +605,24 @@ function QuizQuestionEditor({
   });
   const [editIndex, setEditIndex] = useState(null);
 
+  // Reset question inputs
+  const resetQuestion = () => {
+    setQuestion({ text: "", options: ["", "", "", ""], correctIndex: 0 });
+    setEditIndex(null);
+  };
+
+  // ✅ Effect to reset inputs if question is deleted
+  useEffect(() => {
+    if (editIndex !== null) {
+      if (editIndex >= questions.length || questions[editIndex] === undefined) {
+        resetQuestion();
+      }
+    }
+    if (questions.length === 0) {
+      resetQuestion();
+    }
+  }, [questions]);
+
   const handleOptionChange = (i, value) => {
     const newOptions = [...question.options];
     newOptions[i] = value;
@@ -403,19 +630,27 @@ function QuizQuestionEditor({
   };
 
   const handleSave = () => {
-    if (!question.text.trim()) return;
+    if (!question.text?.trim() && !question.title?.trim()) return;
+
     if (editIndex !== null) {
       updateQuestion(roundIndex, editIndex, question);
       setEditIndex(null);
     } else {
       addQuestion(roundIndex, question);
     }
+
     setQuestion({ text: "", options: ["", "", "", ""], correctIndex: 0 });
   };
 
   const handleEdit = (i) => {
+    const q = questions[i] || {};
+    if (!q) return resetQuestion(); // safety check
     setEditIndex(i);
-    setQuestion(questions[i]);
+    setQuestion({
+      text: q.text || "",
+      options: q.options || ["", "", "", ""],
+      correctIndex: q.correctIndex || 0,
+    });
   };
 
   return (
@@ -447,7 +682,11 @@ function QuizQuestionEditor({
           </div>
         </div>
       ))}
-      <button className="btn btn-sm btn-success mb-3" onClick={handleSave}>
+      <button
+        type="button"
+        className="btn btn-sm btn-success mb-3"
+        onClick={handleSave}
+      >
         {editIndex !== null ? "Update Question" : "Add Question"}
       </button>
 
@@ -460,17 +699,23 @@ function QuizQuestionEditor({
             <span>{q.text}</span>
             <div>
               <button
+                type="button"
                 className="btn btn-sm btn-outline-primary me-2"
                 onClick={() => handleEdit(i)}
               >
                 <Edit2 size={14} />
               </button>
-              <button
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => removeQuestion(roundIndex, i)}
-              >
-                <Trash2 size={14} />
-              </button>
+
+              {/* Hide delete button while editing this question */}
+              {editIndex !== i && (
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => removeQuestion(roundIndex, i)}
+                >
+                  <Trash2 size={14} />
+                </button>
+              )}
             </div>
           </li>
         ))}
@@ -480,7 +725,7 @@ function QuizQuestionEditor({
 }
 
 /* -------------------------------
-   CODING QUESTION EDITOR COMPONENT
+  CODING QUESTION EDITOR COMPONENT
 ---------------------------------*/
 function CodingQuestionEditor({
   roundIndex,
@@ -499,8 +744,33 @@ function CodingQuestionEditor({
   });
   const [editIndex, setEditIndex] = useState(null);
 
+  const resetQuestion = () => {
+    setQuestion({
+      title: "",
+      description: "",
+      inputFormat: "",
+      outputFormat: "",
+      sampleInput: "",
+      sampleOutput: "",
+    });
+    setEditIndex(null);
+  };
+
+  // ✅ Reset if edited question is deleted or all questions gone
+  useEffect(() => {
+    if (editIndex !== null) {
+      if (editIndex >= questions.length || questions[editIndex] === undefined) {
+        resetQuestion();
+      }
+    }
+    if (questions.length === 0) {
+      resetQuestion();
+    }
+  }, [questions]);
+
   const handleSave = () => {
-    if (!question.title.trim()) return;
+    // if (!question.title.trim()) return;
+    if (!question.text?.trim() && !question.title?.trim()) return;
     if (editIndex !== null) {
       updateQuestion(roundIndex, editIndex, question);
       setEditIndex(null);
@@ -518,8 +788,17 @@ function CodingQuestionEditor({
   };
 
   const handleEdit = (i) => {
+    const q = questions[i] || {};
+    if (!q) return resetQuestion(); // safety check
     setEditIndex(i);
-    setQuestion(questions[i]);
+    setQuestion({
+      title: q.title || "",
+      description: q.description || "",
+      inputFormat: q.inputFormat || "",
+      outputFormat: q.outputFormat || "",
+      sampleInput: q.sampleInput || "",
+      sampleOutput: q.sampleOutput || "",
+    });
   };
 
   return (
@@ -579,7 +858,11 @@ function CodingQuestionEditor({
           setQuestion({ ...question, sampleOutput: e.target.value })
         }
       />
-      <button className="btn btn-sm btn-success mb-3" onClick={handleSave}>
+      <button
+        type="button"
+        className="btn btn-sm btn-success mb-3"
+        onClick={handleSave}
+      >
         {editIndex !== null ? "Update Problem" : "Add Problem"}
       </button>
 
@@ -592,17 +875,23 @@ function CodingQuestionEditor({
             <span>{q.title}</span>
             <div>
               <button
+                type="button"
                 className="btn btn-sm btn-outline-primary me-2"
                 onClick={() => handleEdit(i)}
               >
                 <Edit2 size={14} />
               </button>
-              <button
-                className="btn btn-sm btn-outline-danger"
-                onClick={() => removeQuestion(roundIndex, i)}
-              >
-                <Trash2 size={14} />
-              </button>
+
+              {/* Hide delete button while editing this question */}
+              {editIndex !== i && (
+                <button
+                  type="button"
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => removeQuestion(roundIndex, i)}
+                >
+                  <Trash2 size={14} />
+                </button>
+              )}
             </div>
           </li>
         ))}

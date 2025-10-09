@@ -165,7 +165,7 @@ const Login = () => {
                         </Link>
                     </div>
 
-                    <button
+                    {/* <button
                         className="btn btn-light w-100 border d-flex align-items-center justify-content-center gap-2"
                         onClick={googleAuth}
                     >
@@ -174,7 +174,7 @@ const Login = () => {
                             style={{ fontSize: "1.3rem", color: "#DB4437" }}
                         ></i>
                         <span>Sign in with Google</span>
-                    </button>
+                    </button> */}
 
                     <div className="text-center mt-3">
                         New here?{" "}

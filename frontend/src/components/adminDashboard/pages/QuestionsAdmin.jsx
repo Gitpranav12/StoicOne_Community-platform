@@ -30,6 +30,7 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { useCustomAlert } from "../../customAlert/useCustomAlert";
+import toast from "react-hot-toast";
 
 export default function QuestionsAdmin() {
   const [questions, setQuestions] = useState([]);
@@ -89,13 +90,13 @@ export default function QuestionsAdmin() {
           await axios.delete(`http://localhost:8080/api/questions/${id}`);
           setQuestions(questions.filter((q) => q.id !== id));
           if (selectedQuestion?.id === id) setSelectedQuestion(null);
+
+ // ✅ Show success toast
+      toast.success("Question deleted successfully!");
+
         } catch (err) {
           console.error("Failed to delete question:", err);
-          showAlert({
-            title: "Error",
-            message: "Failed to delete question.",
-            onConfirm: () => {},
-          });
+         toast.error("Failed to delete question");
         }
       },
     });
@@ -142,9 +143,10 @@ export default function QuestionsAdmin() {
       setFlagReason("");
       setFlaggingQuestion(null); // close dialog
       // alert("Question flagged successfully");
+        toast.success("Question flagged successfully");
     } catch (err) {
       console.error(err);
-      // alert("Failed to flag question");
+        toast.error("Failed to flag question");
       setFlaggingQuestion(null); // close dialog in case of error
     }
   };
@@ -178,13 +180,10 @@ export default function QuestionsAdmin() {
           //   message: "Question unflagged successfully",
           //   onConfirm: () => {},
           // });
+           toast.success("Question unflagged successfully");
         } catch (err) {
           console.error(err);
-          showAlert({
-            title: "Error",
-            message: "Failed to unflag question",
-            onConfirm: () => {},
-          });
+           toast.error("Failed to unflag question");
         }
       },
     });
