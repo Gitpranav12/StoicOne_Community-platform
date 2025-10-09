@@ -26,7 +26,8 @@ import WhyEditPosts from './components/help/WhyEditPosts';
 import ExploreCollectives from './components/collectives/ExploreCollectives';
 import { CollectivesProvider } from './components/collectives/CollectivesContext';
 import CollectivesPage from "./components/collectives/CollectivePage";
-import Productpage from "./components/productpage/Productpage";
+import Productpage from "./components/productpage/Productpage"; 
+
 // Admin Dashboard pages
 
 import UsersAdmin from "./components/adminDashboard/pages/UsersAdmin";
@@ -44,7 +45,7 @@ import QuizPage from "./components/quiz/QuizPage";
  
 import ProtectedRoute from "./ProtectedRoute";
  
-import ScoreCard from "./components/quiz/ScoreCard";
+// import ScoreCard from "./components/quiz/ScoreCard";
  
 export default function App() {
 
@@ -109,7 +110,7 @@ export default function App() {
             <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
  
             
-            <Route path="/scorecard" element={<ScoreCard />} />
+            {/* <Route path="/scorecard" element={<ScoreCard />} /> */}
 
             {/* Product Page */}
             <Route path="/product" element={<Productpage />} />

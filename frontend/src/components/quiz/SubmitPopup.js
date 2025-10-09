@@ -1,17 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SubmitPopup({ show, total, answered, onReview, onSubmit,answers }) {
+// Added 'isSectionComplete' prop
+export default function SubmitPopup({ show, total, answered, onReview, onSubmit, answers, isSectionComplete }) {
   const navigate = useNavigate();
 
   if (!show) return null;
 
-const handleSubmit = () => {
-  if (onSubmit) onSubmit();
-  // answers prop is passed down from QuizPage
-  navigate("/scorecard", { state: { answers } });
-};
+  // --- ORIGINAL BUSINESS LOGIC FOR FINAL SUBMIT ---
+  const handleFinalQuizSubmit = () => {
+    if (onSubmit) onSubmit(); // Call external onSubmit (handleFinalSubmit from QuizPage if NOT isSectionComplete)
+    // This is the original navigation logic for the FINAL quiz submit
+    navigate("/scorecard", { state: { answers } });
+  };
+  // ------------------------------------------------
 
+  // Function for the 'Submit' button click
+  const handlePrimaryButtonClick = () => {
+    if (isSectionComplete) {
+      // 1. If it's a section complete, just call the prop function (handleNextSection)
+      if (onSubmit) onSubmit();
+    } else {
+      // 2. If it's the final quiz submit, execute the original business logic
+      handleFinalQuizSubmit();
+    }
+  };
 
   return (
     <div
@@ -39,11 +52,24 @@ const handleSubmit = () => {
           padding: "30px 30px 30px 30px",
         }}
       >
-        <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 12 }}>Submit Quiz?</div>
-        <div style={{ color: "#76777A", fontSize: 17, marginBottom: 12 }}>
-          You have answered <b>{answered}</b> out of <b>{total}</b> questions. Are you sure you want to submit your quiz?<br />
-          <span style={{ fontSize: 14, color: "#999" }}>This action cannot be undone.</span>
+        {/* --- DYNAMIC TITLE AND BODY TEXT --- */}
+        <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 12 }}>
+          {isSectionComplete ? 'Section Complete!' : 'Submit Quiz?'}
         </div>
+        <div style={{ color: "#76777A", fontSize: 17, marginBottom: 12 }}>
+          {isSectionComplete ? (
+            <>
+              You have completed this section, answering <b>{answered}</b> out of <b>{total}</b> questions. Click **Go To Next Section** to continue.
+            </>
+          ) : (
+            <>
+              You have answered <b>{answered}</b> out of <b>{total}</b> questions. Are you sure you want to submit your quiz?<br />
+              <span style={{ fontSize: 14, color: "#999" }}>This action cannot be undone.</span>
+            </>
+          )}
+        </div>
+        {/* ------------------------------------- */}
+        
         <div style={{ display: "flex", gap: 18, justifyContent: "flex-end" }}>
           <button
             style={{
@@ -57,9 +83,9 @@ const handleSubmit = () => {
               minWidth: 140,
               cursor: "pointer"
             }}
-            onClick={onReview}
+            onClick={onReview} // onReview always closes the popup and goes back to the quiz
           >
-            Review Answers
+            {isSectionComplete ? 'Review Section' : 'Review Answers'}
           </button>
           <button
             style={{
@@ -73,9 +99,10 @@ const handleSubmit = () => {
               minWidth: 130,
               cursor: "pointer"
             }}
-            onClick={handleSubmit}
+            // Use the new handler to determine action based on 'isSectionComplete'
+            onClick={handlePrimaryButtonClick}
           >
-            Submit Quiz
+            {isSectionComplete ? 'Go To Next Section' : 'Submit Quiz'}
           </button>
         </div>
       </div>
