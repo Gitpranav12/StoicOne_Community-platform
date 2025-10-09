@@ -111,6 +111,14 @@ export default function App() {
             
             <Route path="/scorecard" element={<ScoreCard />} />
  
+            <Route path="/users/:id/*" element={<UserPublicProfile />} />
+
+            <Route path="/admin/events" element={<EventsAdminPage />} />
+            <Route path="/events" element={<EventsUserPage />} />
+            <Route path="/events/contest" element={<ContestPage />} />
+             <Route path="/events/progress" element={<ProgressPage />} />
+            <Route path="/events/code" element={<CodeEditorPage />} />
+            <Route path="/events/quiz" element={<QuizPage />} />
 
           </Routes>
 
