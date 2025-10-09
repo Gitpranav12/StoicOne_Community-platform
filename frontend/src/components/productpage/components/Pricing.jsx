@@ -83,15 +83,7 @@ export function Pricing() {
         <div className="row g-4 justify-content-center">
           {plans.map((plan) => (
             <div key={plan.name} className="col-12 col-md-6 col-lg-4">
-              <div
-                className={`card pricing-card h-100 position-relative ${
-                  plan.highlighted ? 'pricing-card-highlight shadow-lg' : 'border-2'
-                }`}
-                style={{
-                  transform: plan.highlighted ? 'scale(1.05)' : 'scale(1)',
-                  transition: 'all 0.3s ease'
-                }}
-              >
+              <div className="card pricing-card h-100 position-relative">
                 {plan.badge && (
                   <div className="position-absolute top-0 start-50 translate-middle">
                     <div className="badge bg-warning text-dark d-flex align-items-center gap-1 px-3 py-2">
@@ -102,46 +94,26 @@ export function Pricing() {
                 )}
 
                 <div className="card-body text-center p-4" style={{ paddingTop: plan.badge ? '3rem' : '2rem' }}>
-                  <h3 className={`h4 fw-semibold mb-2 ${plan.highlighted ? 'text-black' : 'text-dark'}`}>
-                    {plan.name}
-                  </h3>
+                  <h3 className="h4 fw-semibold mb-2 text-dark">{plan.name}</h3>
                   <div className="mb-2">
-                    <span className={`h2 fw-bold ${plan.highlighted ? 'text-black' : 'text-dark'}`}>
-                      {plan.price}
-                    </span>
-                    <span className={`${plan.highlighted ? 'text-black-50' : 'text-muted'}`}>
-                      /{plan.period}
-                    </span>
+                    <span className="h2 fw-bold text-dark">{plan.price}</span>
+                    <span className="text-muted">/{plan.period}</span>
                   </div>
-                  <p className={`mb-4 ${plan.highlighted ? 'text-dark-50' : 'text-muted'}`}>
-                    {plan.description}
-                  </p>
+                  <p className="mb-4 text-muted">{plan.description}</p>
 
                   <ul className="list-unstyled mb-4">
                     {plan.features.map((feature) => (
                       <li key={feature} className="d-flex align-items-start gap-2 mb-3">
-                        <div
-                          className={`d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 ${
-                            plan.highlighted ? 'bg-white bg-opacity-25' : 'bg-primary bg-opacity-10'
-                          }`}
-                          style={{ width: '20px', height: '20px' }}
-                        >
-                          <Check size={14} className={plan.highlighted ? 'text-dark' : 'text-primary'} />
+                        <div className="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 bg-primary bg-opacity-10"
+                             style={{ width: '20px', height: '20px' }}>
+                          <Check size={14} className="text-primary" />
                         </div>
-                        <span className={`${plan.highlighted ? 'text-dark-50' : 'text-dark'}`}>
-                          {feature}
-                        </span>
+                        <span className="text-dark">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <button
-                    className={`btn w-100 btn-lg ${
-                      plan.highlighted ? 'btn-primary text-white' : 'btn-primary'
-                    }`}
-                  >
-                    {plan.cta}
-                  </button>
+                  <button className="btn btn-primary w-100 btn-lg">{plan.cta}</button>
                 </div>
               </div>
             </div>

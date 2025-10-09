@@ -26,7 +26,7 @@ export function Hero() {
             </div>
 
             <h1 className="display-4 fw-semibold text-dark mb-4">
-              Empower Your Team with Smart CRM
+              Empower Your Team with Stoic CRM
             </h1>
 
             <p className="lead text-muted mb-4">
