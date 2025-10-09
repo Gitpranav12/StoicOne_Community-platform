@@ -36,7 +36,7 @@ async function updateAchievements(userId) {
     { name: "Gold", type: "answers", requirement: 100, description: "100 answers given" },
     { name: "Diamond", type: "answers", requirement: 500, description: "500 answers given" },
     { name: "Community Engagement", type: "comments", requirement: 10, description: "10 comments made" },
-    { name: "Contributor", type: "comments", requirement: 20, description: "20 comments made" },
+    { name: "Contribution", type: "comments", requirement: 20, description: "20 comments made" },
     { name: "Supportive", type: "comments", requirement: 50, description: "50 comments made" },
     { name: "Helping Community", type: "comments", requirement: 100, description: "100 comments made" },
     { name: "Popular Question", type: "views", requirement: 1000, description: "Question reached 1000 views" },
