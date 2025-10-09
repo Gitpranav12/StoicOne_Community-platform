@@ -44,7 +44,6 @@ import QuizPage from "./components/quiz/QuizPage";
  
 import ProtectedRoute from "./ProtectedRoute";
  
-import ScoreCard from "./components/quiz/ScoreCard";
  
 export default function App() {
 
@@ -107,9 +106,7 @@ export default function App() {
              <Route path="/events/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
             <Route path="/events/code" element={<ProtectedRoute><CodeEditorPage /></ProtectedRoute>} />
             <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
- 
-            
-            <Route path="/scorecard" element={<ScoreCard />} />
+
  
             <Route path="/users/:id/*" element={<UserPublicProfile />} />
 
