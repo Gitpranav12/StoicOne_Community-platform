@@ -27,7 +27,7 @@ export function Footer() {
 
         {/* Brand Name - Right */}
         <div>
-          <span className="fw-bold">CRM Pro © 2025</span>
+          <span className="fw-bold">Stoic & Salamander © 2025</span>
         </div>
       </div>
     </footer>
