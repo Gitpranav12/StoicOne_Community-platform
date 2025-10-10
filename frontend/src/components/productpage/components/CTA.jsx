@@ -44,14 +44,14 @@ export function CTA() {
                 <ArrowRight size={20} />
               </button>
 
-              <button className="btn btn-outline-light btn-lg" style={{ minWidth: '220px' }}>
+              {/* <button className="btn btn-outline-light btn-lg" style={{ minWidth: '220px' }}>
                 Schedule a Demo
-              </button>
+              </button> */}
             </div>
-
+{/* 
             <p className="mt-2" style={{ color: '#e3f2fd', fontSize: '0.9rem' }}>
               No credit card required · 14-day free trial · Cancel anytime
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

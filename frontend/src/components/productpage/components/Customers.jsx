@@ -269,7 +269,7 @@ export function Customers() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            Start Your Free Trial
+            Schedule a Demo
             <ArrowRight size={20} />
           </button>
         </div>

@@ -1,76 +1,88 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Users, FileText, Briefcase, Zap, ArrowRight } from 'lucide-react';
 
 export function Features() {
   const [activeTab, setActiveTab] = useState('crm');
   const [imageLoaded, setImageLoaded] = useState({});
+  const navigate = useNavigate();
 
   const features = {
     crm: {
       label: 'CRM',
       icon: <Users size={24} />,
       title: 'Customer Relationship Management',
-      description: 'Manage your entire sales process with an intuitive interface. Track deals through every stage, nurture leads, and close more deals with intelligent insights.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+      description:
+        'Manage your entire sales process with an intuitive interface. Track deals through every stage, nurture leads, and close more deals with intelligent insights.',
+      image: "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?w=800",
+
       points: [
         'Visual sales pipeline with drag-and-drop interface',
         'Intelligent lead scoring and prioritization',
         'Email integration with Gmail and Outlook',
         'Complete customer interaction history',
         'Automated deal rotation and assignment',
-        'Advanced win/loss analysis and forecasting'
+        'Advanced win/loss analysis and forecasting',
       ],
       color: '#1E88E5',
       stats: [
         { value: '40%', label: 'More Conversions' },
-        { value: '3x', label: 'Faster Sales Cycle' }
-      ]
+        { value: '3x', label: 'Faster Sales Cycle' },
+      ],
+      link: '/products',
     },
     hrm: {
       label: 'HRM',
       icon: <Briefcase size={24} />,
       title: 'Human Resource Management',
-      description: 'Complete HR solution for managing employees, tracking performance, streamlining recruitment, and handling all your workforce needs.',
-      image: 'https://images.unsplash.com/photo-1620221905485-86b2e9e1b594?w=800',
+      description:
+        'Complete HR solution for managing employees, tracking performance, streamlining recruitment, and handling all your workforce needs.',
+      image: "https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800",
+
       points: [
         'Comprehensive employee database and profiles',
         'Automated leave and attendance management',
         'Performance evaluation and review system',
         'Streamlined recruitment and onboarding',
         'Payroll integration and management',
-        'Training and development tracking'
+        'Training and development tracking',
       ],
       color: '#43A047',
       stats: [
         { value: '60%', label: 'Time Saved' },
-        { value: '85%', label: 'Employee Satisfaction' }
-      ]
+        { value: '85%', label: 'Employee Satisfaction' },
+      ],
+      link: '/hrm',
     },
     invoicing: {
       label: 'Invoicing',
       icon: <FileText size={24} />,
       title: 'Invoice & Billing System',
-      description: 'Generate professional invoices, track payments, and manage your finances with automated tools and comprehensive reporting.',
-      image: 'https://images.unsplash.com/photo-1735825764457-ffdf0b5aa5dd?w=800',
+      description:
+        'Generate professional invoices, track payments, and manage your finances with automated tools and comprehensive reporting.',
+     image: "https://images.unsplash.com/photo-1581093588401-22d612b6e6c2?auto=format&fit=crop&q=80&w=800",
+
       points: [
         'Professional invoice templates and customization',
         'Automated recurring invoices and scheduling',
         'Real-time payment tracking and reminders',
         'Multi-currency and tax calculation support',
         'Automated tax compliance and reporting',
-        'Comprehensive financial analytics dashboard'
+        'Comprehensive financial analytics dashboard',
       ],
       color: '#FB8C00',
       stats: [
         { value: '50%', label: 'Faster Payments' },
-        { value: '95%', label: 'Accuracy Rate' }
-      ]
+        { value: '95%', label: 'Accuracy Rate' },
+      ],
+      link: '/invoicing',
     },
     suite: {
       label: 'Business Suite',
       icon: <Zap size={24} />,
       title: 'Complete Business Suite',
-      description: 'All-in-one solution with cross-module automation, unified analytics, seamless integration, and enterprise-grade security.',
+      description:
+        'All-in-one solution with cross-module automation, unified analytics, seamless integration, and enterprise-grade security.',
       image: 'https://images.unsplash.com/photo-1704655295066-681e61ecca6b?w=800',
       points: [
         'Unified dashboard for all business modules',
@@ -78,14 +90,15 @@ export function Features() {
         'Real-time analytics and business insights',
         'Custom integration and API capabilities',
         'Advanced role-based access control',
-        'Enterprise security and compliance features'
+        'Enterprise security and compliance features',
       ],
       color: '#8E24AA',
       stats: [
         { value: '70%', label: 'Productivity Boost' },
-        { value: '100%', label: 'Data Sync' }
-      ]
-    }
+        { value: '100%', label: 'Data Sync' },
+      ],
+      link: '/suite',
+    },
   };
 
   return (
@@ -100,24 +113,29 @@ export function Features() {
           </p>
         </div>
 
-        {/* Tabs Navigation */}
+        {/* Tabs */}
         <div className="mb-5">
           <div className="d-flex justify-content-center flex-wrap gap-3">
             {Object.keys(features).map((key) => (
               <button
                 key={key}
-                className={`btn d-flex align-items-center gap-2 ${activeTab === key ? 'active' : ''}`}
+                className={`btn d-flex align-items-center gap-2 ${
+                  activeTab === key ? 'active' : ''
+                }`}
                 onClick={() => setActiveTab(key)}
                 style={{
                   borderRadius: '12px',
                   padding: '12px 28px',
                   transition: 'all 0.3s ease',
-                  backgroundColor: activeTab === key ? features[key].color : 'transparent',
+                  backgroundColor:
+                    activeTab === key ? features[key].color : 'transparent',
                   color: activeTab === key ? 'white' : '#6c757d',
                   border: activeTab === key ? 'none' : '2px solid #dee2e6',
                   fontWeight: '600',
                   transform: activeTab === key ? 'scale(1.05)' : 'scale(1)',
-                  boxShadow: activeTab === key ? `0 8px 20px ${features[key].color}40` : 'none'
+                  boxShadow: activeTab === key
+                    ? `0 8px 20px ${features[key].color}40`
+                    : 'none',
                 }}
               >
                 {features[key].icon}
@@ -130,33 +148,35 @@ export function Features() {
         {/* Tab Content */}
         <div className="tab-content">
           {Object.keys(features).map((key) => (
-            <div 
+            <div
               key={key}
-              className={`tab-pane ${activeTab === key ? 'show active' : 'd-none'}`}
+              className={`tab-pane ${
+                activeTab === key ? 'show active' : 'd-none'
+              }`}
               style={{
-                animation: activeTab === key ? 'fadeIn 0.5s ease-in' : 'none'
+                animation: activeTab === key ? 'fadeIn 0.5s ease-in' : 'none',
               }}
             >
               <div className="row align-items-center g-5">
-                {/* Content */}
+                {/* Text Section */}
                 <div className="col-lg-6">
-                  <div 
+                  <div
                     className="d-inline-flex align-items-center justify-content-center rounded mb-4"
                     style={{
                       width: '80px',
                       height: '80px',
                       background: `linear-gradient(135deg, ${features[key].color}, ${features[key].color}dd)`,
                       color: 'white',
-                      boxShadow: `0 10px 25px ${features[key].color}40`
+                      boxShadow: `0 10px 25px ${features[key].color}40`,
                     }}
                   >
                     {features[key].icon}
                   </div>
-                  
+
                   <h3 className="fw-bold text-dark mb-3" style={{ fontSize: '2rem' }}>
                     {features[key].title}
                   </h3>
-                  
+
                   <p className="text-muted lead mb-4" style={{ fontSize: '1.1rem' }}>
                     {features[key].description}
                   </p>
@@ -165,22 +185,24 @@ export function Features() {
                   <ul className="list-unstyled mb-4">
                     {features[key].points.map((point, idx) => (
                       <li key={idx} className="d-flex align-items-start mb-3">
-                        <svg 
-                          className="me-3 mt-1 flex-shrink-0" 
-                          width="24" 
-                          height="24" 
-                          fill="none" 
-                          stroke={features[key].color} 
+                        <svg
+                          className="me-3 mt-1 flex-shrink-0"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          stroke={features[key].color}
                           viewBox="0 0 24 24"
                         >
-                          <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2.5} 
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <span className="text-dark" style={{ fontSize: '1rem' }}>{point}</span>
+                        <span className="text-dark" style={{ fontSize: '1rem' }}>
+                          {point}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -188,15 +210,18 @@ export function Features() {
                   {/* Stats */}
                   <div className="d-flex gap-4 mb-4">
                     {features[key].stats.map((stat, idx) => (
-                      <div 
+                      <div
                         key={idx}
                         className="p-3 rounded"
                         style={{
                           backgroundColor: `${features[key].color}10`,
-                          border: `2px solid ${features[key].color}30`
+                          border: `2px solid ${features[key].color}30`,
                         }}
                       >
-                        <h4 className="fw-bold mb-0" style={{ color: features[key].color }}>
+                        <h4
+                          className="fw-bold mb-0"
+                          style={{ color: features[key].color }}
+                        >
                           {stat.value}
                         </h4>
                         <small className="text-muted">{stat.label}</small>
@@ -205,7 +230,7 @@ export function Features() {
                   </div>
 
                   {/* CTA Button */}
-                  <button 
+                  {/* <button
                     className="btn btn-lg d-flex align-items-center gap-2"
                     style={{
                       backgroundColor: features[key].color,
@@ -214,8 +239,9 @@ export function Features() {
                       borderRadius: '12px',
                       padding: '14px 32px',
                       fontWeight: '600',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
                     }}
+                    onClick={() => navigate(features[key].link)}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'translateX(5px)';
                       e.currentTarget.style.boxShadow = `0 10px 25px ${features[key].color}50`;
@@ -227,34 +253,59 @@ export function Features() {
                   >
                     Explore {features[key].label}
                     <ArrowRight size={20} />
-                  </button>
+                  </button> */}
                 </div>
 
-                {/* Visual */}
+                {/* Image Section */}
                 <div className="col-lg-6">
-                  <div 
+                  <div
                     className="position-relative rounded shadow-lg overflow-hidden"
-                    style={{ 
+                    style={{
                       borderRadius: '20px',
-                      border: `4px solid ${features[key].color}30`
+                      border: `4px solid ${features[key].color}30`,
+                      minHeight: '300px',
+                      backgroundColor: '#f5f5f5',
                     }}
                   >
+                    {!imageLoaded[key] && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#aaa',
+                          fontSize: '1.2rem',
+                          fontWeight: '500',
+                        }}
+                      >
+                        Loading image...
+                      </div>
+                    )}
+
                     <img
                       src={features[key].image}
                       alt={features[key].title}
                       className="img-fluid w-100"
-                      onLoad={() => setImageLoaded({...imageLoaded, [key]: true})}
+                      onLoad={() =>
+                        setImageLoaded({ ...imageLoaded, [key]: true })
+                      }
                       style={{
-                        transition: 'transform 0.3s ease',
+                        transition: 'transform 0.5s ease, opacity 0.5s ease',
                         transform: imageLoaded[key] ? 'scale(1)' : 'scale(0.95)',
-                        opacity: imageLoaded[key] ? 1 : 0
+                        opacity: imageLoaded[key] ? 1 : 0,
                       }}
                     />
-                    <div 
+
+                    <div
                       className="position-absolute top-0 start-0 w-100 h-100"
-                      style={{ 
+                      style={{
                         background: `linear-gradient(135deg, ${features[key].color}15, transparent)`,
-                        pointerEvents: 'none'
+                        pointerEvents: 'none',
                       }}
                     ></div>
                   </div>

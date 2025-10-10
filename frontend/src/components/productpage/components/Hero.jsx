@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight, PlayCircle, Check } from 'lucide-react';
+import { ArrowRight, PlayCircle, Check,ChartLine, ZapIcon } from 'lucide-react';
 
 export function Hero() {
   const [currentImage, setCurrentImage] = useState(0);
   
   const images = [
     'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
-    'https://images.unsplash.com/photo-1620221905485-86b2e9e1b594?w=800',
+    'https://t4.ftcdn.net/jpg/05/39/08/33/360_F_539083351_DbZXB3Q3xjDXWwvpOu1SFDCXpV0OS7VX.jpg',
     'https://images.unsplash.com/photo-1735825764457-ffdf0b5aa5dd?w=800',
     'https://images.unsplash.com/photo-1704655295066-681e61ecca6b?w=800'
   ];
@@ -27,14 +27,14 @@ export function Hero() {
 
   return (
     <section 
-      className="py-5 mt-5 position-relative overflow-hidden" 
+      className=" position-relative overflow-hidden" 
       style={{ 
         background: 'linear-gradient(135deg, #ffffff 0%, #e3f2fd 30%, #bbdefb 70%, #ffffff 100%)',
         minHeight: '100vh'
       }}
     >
       {/* Animated Background Elements */}
-      <div className="position-absolute" style={{ top: '10%', left: '5%', opacity: 0.1 }}>
+      <div className="position-absolute" style={{ top: '5%', left: '5%', opacity: 0.1 }}>
         <div 
           className="rounded-circle"
           style={{
@@ -85,7 +85,7 @@ export function Hero() {
                 lineHeight: '1.2'
               }}
             >
-              Complete Business Suite for Modern Teams
+              Our Enterprise Business Solution Suite
             </h1>
             
             <p 
@@ -272,7 +272,7 @@ export function Hero() {
                       fontSize: '1.5rem'
                     }}
                   >
-                    📈
+                  <ChartLine className="text-white" size={28} />
                   </div>
                   <div>
                     <h5 className="fw-bold mb-0 text-dark">+28%</h5>
@@ -301,7 +301,7 @@ export function Hero() {
                       fontSize: '1.5rem'
                     }}
                   >
-                    ⚡
+                    <ZapIcon className="text-white" size={28} />
                   </div>
                   <div>
                     <h5 className="fw-bold mb-0 text-dark">2.5x</h5>

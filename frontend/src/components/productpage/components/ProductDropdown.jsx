@@ -7,12 +7,12 @@ export function ProductDropdown({ onNavigate }) {
   const products = [
     {
       id: 'crm',
-      category: 'CRM',
+      category: 'STOIC CRM',
       page: 'crm',
       color: '#1E88E5',
       tagline: 'Grow Your Customer Relationships',
       description: 'Complete customer relationship management to track leads, manage contacts, and close more deals.',
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxDUk0lMjBkYXNoYm9hcmQlMjBhbmFseXRpY3N8ZW58MXx8fHwxNzYwMDE3NjQyfDA&ixlib=rb-4.1.0&q=80&w=1080',
+      image: 'https://www.shutterstock.com/image-photo/businessman-using-crm-on-smartphone-600nw-2629431153.jpg',
       tools: [
         { icon: <Target size={20} />, title: 'Lead Management', description: 'Track and nurture leads' },
         { icon: <Users size={20} />, title: 'Contact Database', description: 'Centralized customer data' },
@@ -22,7 +22,7 @@ export function ProductDropdown({ onNavigate }) {
     },
     {
       id: 'hrm',
-      category: 'HRM',
+      category: 'STOIC HRM',
       page: 'hrm',
       color: '#43A047',
       tagline: 'Empower Your Workforce',
@@ -37,7 +37,7 @@ export function ProductDropdown({ onNavigate }) {
     },
     {
       id: 'invoicing',
-      category: 'Invoicing',
+      category: 'STOIC Invoicing',
       page: 'invoicing',
       color: '#FB8C00',
       tagline: 'Streamline Your Billing',
@@ -52,7 +52,7 @@ export function ProductDropdown({ onNavigate }) {
     },
     {
       id: 'suite',
-      category: 'Suite',
+      category: 'STOIC Suite',
       page: 'suite',
       color: '#8E24AA',
       tagline: 'All-in-One Business Solution',

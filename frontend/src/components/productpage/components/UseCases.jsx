@@ -194,7 +194,7 @@ export function UseCases() {
           <p className="text-muted mb-3">
             See how our tools can transform your workflow
           </p>
-          <button 
+          {/* <button 
             className="btn btn-lg"
             style={{
               background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
@@ -215,7 +215,7 @@ export function UseCases() {
             }}
           >
             Start Free Trial
-          </button>
+          </button> */}
         </div>
       </div>
     </section>
