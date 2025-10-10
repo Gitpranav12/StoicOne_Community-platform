@@ -19,12 +19,14 @@ export default function CustomizeFeedModal({ show, handleClose }) {
     interested: [],
     notinterested: [],
   });
-// .............Added by Pranav Jawarkar 27 sep .......... 
-// fetch Tags from Tags Page API for Intrested and Not Interested Tags
+  // .............Added by Pranav Jawarkar 27 sep ..........
+  // fetch Tags from Tags Page API for Intrested and Not Interested Tags
   useEffect(() => {
     if (show) {
       axios
-        .get("http://localhost:8080/api/tags", { params: { page: 1, limit: 100 } })
+        .get("http://localhost:8080/api/tags", {
+          params: { page: 1, limit: 100 },
+        })
         .then((res) => {
           setAllTags(res.data.data);
           setFilteredTags(res.data.data);
@@ -46,7 +48,8 @@ export default function CustomizeFeedModal({ show, handleClose }) {
   }, [searchTerm, allTags]);
 
   const handleTagSelect = (tagName) => {
-    const otherType = interest === "interested" ? "notinterested" : "interested";
+    const otherType =
+      interest === "interested" ? "notinterested" : "interested";
     setSelectedTags((prev) => {
       let a = prev[interest].includes(tagName)
         ? prev[interest]
@@ -99,6 +102,13 @@ export default function CustomizeFeedModal({ show, handleClose }) {
     handleClose();
   };
 
+ const handleResetTags = () => {
+  setSelectedTags({
+    interested: [],
+    notinterested: [],
+  });
+};
+
   return (
     <Modal show={show} onHide={handleClose} centered size="md">
       <Modal.Header closeButton>
@@ -108,7 +118,9 @@ export default function CustomizeFeedModal({ show, handleClose }) {
         <Row className="mb-3 text-center">
           <Col>
             <Button
-              variant={interest === "interested" ? "success" : "outline-success"}
+              variant={
+                interest === "interested" ? "success" : "outline-success"
+              }
               className="w-100 py-2 sub-heading-text mb-2"
               onClick={() => setInterest("interested")}
             >
@@ -117,7 +129,9 @@ export default function CustomizeFeedModal({ show, handleClose }) {
           </Col>
           <Col>
             <Button
-              variant={interest === "notinterested" ? "danger" : "outline-danger"}
+              variant={
+                interest === "notinterested" ? "danger" : "outline-danger"
+              }
               className="w-100 py-2 sub-heading-text mb-2"
               onClick={() => setInterest("notinterested")}
             >
@@ -170,6 +184,11 @@ export default function CustomizeFeedModal({ show, handleClose }) {
         )}
       </Modal.Body>
       <Modal.Footer>
+        {(selectedTags.interested.length > 0 || selectedTags.notinterested.length > 0) && (
+          <Button variant="outline-danger" onClick={handleResetTags}>
+            Reset Tags
+          </Button>
+        )}
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>

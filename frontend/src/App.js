@@ -127,8 +127,6 @@ export default function App() {
               <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
 
 
-              {/* <Route path="/scorecard" element={<ScoreCard />} /> */}
-
               {/* Product Page */}
               <Route path="/product" element={<Productpage />} />
               {/* admin events pages routes */}
