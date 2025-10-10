@@ -35,6 +35,7 @@ import AnswerCell from "../ui/AnswerCell";
 
 import { useCustomAlert } from "../../customAlert/useCustomAlert";
 import Dropdown from 'react-bootstrap/Dropdown';
+import toast from "react-hot-toast";
 
 
 export default function AnswersAdmin() {
@@ -139,15 +140,12 @@ export default function AnswersAdmin() {
               ...prev,
               [questionId]: prev[questionId].filter((a) => a.id !== answerId),
             }));
+             toast.success("Answer deleted successfully!");
           }
         } catch (err) {
           console.error("Error deleting answer:", err);
           // Optional: show an error alert
-          showAlert({
-            title: "Error",
-            message: "Failed to delete answer.",
-            onConfirm: () => {},
-          });
+          toast.error("Failed to delete answer.");
         }
       },
     });
@@ -173,9 +171,15 @@ export default function AnswersAdmin() {
             a.id === answerId ? { ...a, approved: status } : a
           ),
         }));
+        if(status==1){
+           toast.success("Answer is Approved.");
+        }else{
+         toast.success("Answer is Rejected.");
+        }
       }
     } catch (err) {
       console.error("Error updating approval:", err);
+      toast.error("Failed to Update Answer Status ");
     }
   };
 

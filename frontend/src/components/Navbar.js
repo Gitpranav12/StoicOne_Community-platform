@@ -84,7 +84,7 @@ const profilePhotoUrl = id
               <li>
                 <button
                   className="product-link"
-                  onClick={() => window.location.href = "https://www.stoicsalamander.com/product/stoiccrm"}
+                    onClick={() => window.location.href = '/product'}
                 >
                   <span className="item-title">Stoic CRM</span>
                   <span className="item-desc">

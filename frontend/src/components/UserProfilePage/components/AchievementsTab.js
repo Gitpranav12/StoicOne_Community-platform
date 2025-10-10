@@ -28,16 +28,18 @@ export default function AchievementsTab({ user: propUser, loading: propLoading }
         {badges.map((b) => (
           <div key={b.id} className="col-md-4 col-sm-6 mb-3">
             <div className="card h-100 p-3 text-center shadow-sm position-relative">
-              <div className="position-relative">
-                <span
-                  className="fs-2"
+              <div className="position-relative d-flex justify-content-center">
+                <img
+                  src={`http://localhost:8080${b.icon}`}
+                  alt={b.name}
                   style={{
+                    width: "60px",
+                    height: "60px",
+                    objectFit: "contain",
                     filter: b.achieved ? "none" : "blur(2px)",
                     transition: "filter 0.3s",
                   }}
-                >
-                  {b.icon || "🏅"} {/* icon from DB */}
-                </span>
+                />
                 {!b.achieved && (
                   <FaLock
                     className="position-absolute"

@@ -4,6 +4,7 @@ import ContestTable from "./ContestTable";
 import CreateContestForm from "./CreateContestForm";
 import ContestDetails from "./ContestDetails";
 import SubmissionReview from "./SubmissionReview";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminEvents({
   contests,
@@ -14,6 +15,7 @@ export default function AdminEvents({
   const [activeTab, setActiveTab] = useState("contests");
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedContest, setSelectedContest] = useState(null);
+  const navigate = useNavigate(); // ✅ Use navigation hook
 
   const stats = {
     totalContests: contests.length,
@@ -24,31 +26,32 @@ export default function AdminEvents({
 
   const handleCreateSuccess = (contest) => {
     onCreateContest(contest);
-    setShowCreateForm(false);
+    // setShowCreateForm(false);
+    navigate("/admin/events"); // ✅ Redirect back to dashboard after creation
   };
 
-  if (showCreateForm) {
-    return (
-      <CreateContestForm
-        onSuccess={handleCreateSuccess}
-        onCancel={() => setShowCreateForm(false)}
-      />
-    );
-  }
+  const handleEditContest = (contest) => {
+    navigate("/admin/events/createContest", { state: { contest } });
+  };
 
-  if (selectedContest) {
-    return (
-      <ContestDetails
-        contest={selectedContest}
-        onBack={() => setSelectedContest(null)}
-        onUpdate={(updates) => onUpdateContest(selectedContest.id, updates)}
-        onDelete={() => {
-          onDeleteContest(selectedContest.id);
-          setSelectedContest(null);
-        }}
-      />
-    );
-  }
+
+  // if (selectedContest) {
+  //   return (
+  //     <ContestDetails
+  //       contest={selectedContest}
+  //       onBack={() => setSelectedContest(null)}
+  //       onUpdate={(updates) => onUpdateContest(selectedContest.id, updates)}
+  //       onDelete={() => {
+  //         onDeleteContest(selectedContest.id);
+  //         setSelectedContest(null);
+  //       }}
+  //     />
+  //   );
+  // }
+  const handleSelectContest = (contest) => {
+  navigate("/admin/events/contestDetails", { state: { contest } });
+};
+
 
   return (
     <div className="admin-dashboard">
@@ -65,7 +68,8 @@ export default function AdminEvents({
 
         <button
           className="btn btn-primary btn-lg d-flex align-items-center justify-content-center"
-          onClick={() => setShowCreateForm(true)}
+          // onClick={() => setShowCreateForm(true)}
+          onClick={() => navigate("/admin/events/createContest")} // ✅ Navigate to route
         >
           <Plus size={20} className="me-2" />
           Create Contest
@@ -167,8 +171,9 @@ export default function AdminEvents({
           <div className="tab-pane fade show active">
             <ContestTable
               contests={contests}
-              onSelectContest={setSelectedContest}
+              onSelectContest={handleSelectContest}
               onDeleteContest={onDeleteContest}
+              onEditContest={handleEditContest}
             />
           </div>
         )}

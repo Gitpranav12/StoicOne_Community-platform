@@ -27,6 +27,7 @@ import {
 import Layout from "../../../Layout/Layout";
 import "./styles/CollectivesAdmin.css"; // custom css import
 import { useCustomAlert } from "../../customAlert/useCustomAlert";
+import toast from "react-hot-toast";
 
 export default function CollectivesAdmin() {
   const [collectives, setCollectives] = useState([]);
@@ -92,8 +93,14 @@ export default function CollectivesAdmin() {
       setNewCollectiveDescription("");
       setNewCollectiveIcon(null);
       setNewCollectiveTags([]);
+
+       // ✅ Close dialog after success
+    setCreateDialogOpen(false);
+
+       toast.success("Collective Added successfully!");
     } catch (err) {
       console.error("Error adding collective:", err);
+       toast.error("Error adding collective");
     }
   };
 
@@ -129,8 +136,11 @@ export default function CollectivesAdmin() {
       setNewCollectiveDescription("");
       setNewCollectiveIcon(null);
       setNewCollectiveTags([]);
+
+       toast.success("Collective Updated successfully!");
     } catch (err) {
       console.error("Error updating collective:", err);
+       toast.error("Error updating collective");
     }
   };
 
@@ -142,14 +152,11 @@ export default function CollectivesAdmin() {
         try {
           await axios.delete(`http://localhost:8080/api/collectives/${id}`);
           fetchCollectives();
+           toast.success("Collective Deleted successfully!");
         } catch (err) {
           console.error("Error deleting collective:", err);
-          // Optional: show error alert
-          showAlert({
-            title: "Error",
-            message: "Failed to delete collective.",
-            onConfirm: () => {},
-          });
+            toast.error("Failed to delete collective.");
+         
         }
       },
     });

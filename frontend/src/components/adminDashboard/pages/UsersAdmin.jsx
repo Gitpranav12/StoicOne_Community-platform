@@ -21,6 +21,7 @@ import Layout from "../../../Layout/Layout";
 import axios from "axios"; // npm i axios
 
 import { useCustomAlert } from "../../customAlert/useCustomAlert";
+import toast from "react-hot-toast";
 
 export default function UsersAdmin() {
   const [users, setUsers] = useState([]);
@@ -86,13 +87,10 @@ export default function UsersAdmin() {
         try {
           await axios.delete(`http://localhost:8080/api/users/${userId}`);
           setUsers((prev) => prev.filter((u) => u.id !== userId));
+           toast.success("User deleted successfully!");
         } catch (err) {
           console.error("Failed to delete user", err);
-          showAlert({
-            title: "Error",
-            message: "Failed to delete user.",
-            onConfirm: () => {},
-          });
+          toast.error("Failed to delete user");
         }
       },
     });
