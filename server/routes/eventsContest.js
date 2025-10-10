@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
         for (const q of round.questions) {
           await conn.query(
             'INSERT INTO coding_questions (round_id, title, description, input_format, output_format, sample_input, sample_output) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [roundId, q.title, q.description, q.inputFormat, q.outputFormat, q.sampleInput, q.sampleOutput]
+            [roundId, q.title, q.description, q.input_format, q.output_format, q.sample_input, q.sample_output]
           );
         }
       }
@@ -175,7 +175,7 @@ router.put('/:id', async (req, res) => {
         for (const q of round.questions) {
           await conn.query(
             'INSERT INTO coding_questions (round_id, title, description, input_format, output_format, sample_input, sample_output) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [roundId, q.title, q.description, q.inputFormat, q.outputFormat, q.sampleInput, q.sampleOutput]
+            [roundId, q.title, q.description, q.input_format, q.output_format, q.sample_input, q.sample_output]
           );
         }
       }
