@@ -78,6 +78,17 @@ export default function App() {
           <Route path="/tags" element={<Tags />} />
           <Route path="/chat" element={<Chat />} />
         </Routes> */}
+          <Routes>
+            <Route path="/" element={<Login />} />
+           <Route path="/login" element={<Login />} />
+ 
+            <Route path="/Signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* home */}
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
+            <Route path="/admin-dashboard" element={<ProtectedRoute><DashboardHomeAdmin /></ProtectedRoute>} />
+            {/* Admin Dashboard with nested tabs
+=======
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/Signup" element={<Signup />} />
@@ -86,6 +97,7 @@ export default function App() {
               <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
               <Route path="/admin-dashboard" element={<ProtectedRoute><DashboardHomeAdmin /></ProtectedRoute>} />
               {/* Admin Dashboard with nested tabs
+>>>>>>> 54ce30f07109cb86fd79ca48e0f605540d4ea4da
               <Route path="/admin/*" element={<AdminDashboardPage />} /> */}
               {/* User */}
               <Route path="/user" element={<ProtectedRoute><UsersPage /></ProtectedRoute>} />
