@@ -7,9 +7,12 @@ export default function ContestCard({ contest }) {
   const navigate = useNavigate();
 
   return (
-    <Card className="shadow-sm h-100">
+    <Card className="border shadow-sm h-100"
+    style={{ backgroundColor: "#f3f4f7ff" }}
+    >
       <Card.Body className="d-flex flex-column">
         <div>
+          {/* Title and badges */}
           <Card.Title>{contest.title}</Card.Title>
           <Badge
             bg={
@@ -25,22 +28,31 @@ export default function ContestCard({ contest }) {
           </Badge>
           <Badge bg="info">{contest.type}</Badge>
 
+          {/* Description */}
           <Card.Text className="mt-2 text-muted">{contest.description}</Card.Text>
 
-          <p className="mb-1">
-            <Calendar size={16} className="me-2" /> {contest.date} • {contest.time}
-          </p>
-          <p className="mb-1">
-            <Clock size={16} className="me-2" /> {contest.duration}
-          </p>
-          <p className="mb-1">
-            <Users size={16} className="me-2" /> {contest.participants}/{contest.maxParticipants}
-          </p>
-          <p>
-            <HelpCircle size={16} className="me-2" /> {contest.questions} questions
-          </p>
+          {/* Contest Info (Icons + Text in same row) */}
+          <div className="mt-2 text-muted small">
+            <div className="d-flex align-items-center mb-1">
+              <Calendar size={16} className="me-2 text-secondary" />
+              <span>{contest.date} • {contest.time}</span>
+            </div>
+            <div className="d-flex align-items-center mb-1">
+              <Clock size={16} className="me-2 text-secondary" />
+              <span>{contest.duration}</span>
+            </div>
+            <div className="d-flex align-items-center mb-1">
+              <Users size={16} className="me-2 text-secondary" />
+              <span>{contest.participants}/{contest.maxParticipants}</span>
+            </div>
+            <div className="d-flex align-items-center">
+              <HelpCircle size={16} className="me-2 text-secondary" />
+              <span>{contest.questions} questions</span>
+            </div>
+          </div>
         </div>
 
+        {/* Button */}
         <div className="mt-auto pt-3">
           {contest.status === "Ongoing" && (
             <Button
