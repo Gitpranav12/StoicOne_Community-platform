@@ -8,12 +8,14 @@ import {
   XCircle,
   Clock,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function SubmissionReview({ contests }) {
   const [selectedContest, setSelectedContest] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-
+ const navigate = useNavigate(); // ✅ Use navigation hook
   // Mock submission data
   const mockSubmissions = [
     {
@@ -100,6 +102,10 @@ export default function SubmissionReview({ contests }) {
     if (score >= 80) return "text-success";
     if (score >= 60) return "text-warning";
     return "text-danger";
+  };
+
+    const handleSelectViewDetails = (contest) => {
+    navigate("/admin/events/contestDetails", { state: { contest } });
   };
 
   return (
@@ -312,10 +318,7 @@ export default function SubmissionReview({ contests }) {
                           className="btn btn-outline-primary btn-sm"
                           title="View Submission Details"
                           onClick={() => {
-                            // In a real app, this would open a modal or navigate to details page
-                            alert(
-                              `Viewing submission details for ${submission.username}`
-                            );
+                             navigate("/admin/events/submissionDetails")
                           }}
                         >
                           <Eye size={16} />

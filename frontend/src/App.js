@@ -50,6 +50,7 @@ import EventsAdminPage from "./components/adminEvents/EventsAdminPage";
 import CreateContestForm from "./components/adminEvents/CreateContestForm";
 import ContestDetails from "./components/adminEvents/ContestDetails";
 import { Toaster } from 'react-hot-toast';
+import SubmissionDetail from "./components/adminEvents/SubmissionDetail";
 
 export default function App() {
 
@@ -145,6 +146,7 @@ export default function App() {
               <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
               <Route path="/admin/events/createContest" element={<ProtectedRoute><CreateContestForm /></ProtectedRoute>} />
               <Route path="/admin/events/contestDetails" element={<ProtectedRoute><ContestDetails /></ProtectedRoute>} />
+              <Route path="/admin/events/submissionDetails" element={<ProtectedRoute><SubmissionDetail /></ProtectedRoute>} />
 
 
             </Routes>

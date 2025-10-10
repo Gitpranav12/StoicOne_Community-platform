@@ -34,7 +34,6 @@ export default function AdminEvents({
     navigate("/admin/events/createContest", { state: { contest } });
   };
 
-
   // if (selectedContest) {
   //   return (
   //     <ContestDetails
@@ -49,9 +48,8 @@ export default function AdminEvents({
   //   );
   // }
   const handleSelectContest = (contest) => {
-  navigate("/admin/events/contestDetails", { state: { contest } });
-};
-
+    navigate("/admin/events/contestDetails", { state: { contest } });
+  };
 
   return (
     <div className="admin-dashboard">
