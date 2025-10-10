@@ -1,136 +1,311 @@
-import { ArrowRight, PlayCircle,Zap,ChartLineIcon} from 'lucide-react';
-
+import { useState, useEffect } from 'react';
+import { ArrowRight, PlayCircle, Check } from 'lucide-react';
 
 export function Hero() {
+  const [currentImage, setCurrentImage] = useState(0);
+  
+  const images = [
+    'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
+    'https://images.unsplash.com/photo-1620221905485-86b2e9e1b594?w=800',
+    'https://images.unsplash.com/photo-1735825764457-ffdf0b5aa5dd?w=800',
+    'https://images.unsplash.com/photo-1704655295066-681e61ecca6b?w=800'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const features = [
+    'Complete CRM System',
+    'HR Management Tools', 
+    'Professional Invoicing',
+    'Integrated Business Suite'
+  ];
+
   return (
-    <section
-      className="section-padding"
-      style={{
-        paddingTop: '120px',
-        paddingBottom: '120px', // ensures spacing from next section
-        background: 'linear-gradient(135deg, #ffffff 0%, #f0f7ff 50%, #ffffff 100%)',
-        scrollMarginTop: '80px', // prevents overlap with fixed navbar
+    <section 
+      className="py-5 mt-5 position-relative overflow-hidden" 
+      style={{ 
+        background: 'linear-gradient(135deg, #ffffff 0%, #e3f2fd 30%, #bbdefb 70%, #ffffff 100%)',
+        minHeight: '100vh'
       }}
     >
-      <div className="container">
-        <div className="row align-items-center g-5">
+      {/* Animated Background Elements */}
+      <div className="position-absolute" style={{ top: '10%', left: '5%', opacity: 0.1 }}>
+        <div 
+          className="rounded-circle"
+          style={{
+            width: '300px',
+            height: '300px',
+            background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+            filter: 'blur(60px)',
+            animation: 'float 6s ease-in-out infinite'
+          }}
+        ></div>
+      </div>
+      <div className="position-absolute" style={{ bottom: '10%', right: '5%', opacity: 0.1 }}>
+        <div 
+          className="rounded-circle"
+          style={{
+            width: '250px',
+            height: '250px',
+            background: 'linear-gradient(135deg, #43A047, #2E7D32)',
+            filter: 'blur(60px)',
+            animation: 'float 8s ease-in-out infinite'
+          }}
+        ></div>
+      </div>
+
+      <div className="container py-5 position-relative" style={{ zIndex: 10 }}>
+        <div className="row align-items-center g-5 py-5">
           {/* Left Content */}
-          <div className="col-lg-6 order-lg-1 order-2">
-            <div className="mb-4">
-              <span
+          <div className="col-lg-6">
+            <div className="mb-4" style={{ animation: 'fadeInUp 0.6s ease-out' }}>
+              <span 
                 className="badge rounded-pill px-4 py-2"
-                style={{ backgroundColor: '#e3f2fd', color: '#1E88E5' }}
+                style={{ 
+                  backgroundColor: '#E3F2FD', 
+                  color: '#1E88E5',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  border: '2px solid #1E88E550'
+                }}
               >
                 ✨ Trusted by 10,000+ teams worldwide
               </span>
             </div>
-
-            <h1 className="display-4 fw-semibold text-dark mb-4">
-              Empower Your Team with Stoic CRM
+            
+            <h1 
+              className="display-3 fw-bold text-dark mb-4"
+              style={{ 
+                animation: 'fadeInUp 0.6s ease-out 0.2s backwards',
+                lineHeight: '1.2'
+              }}
+            >
+              Complete Business Suite for Modern Teams
             </h1>
-
-            <p className="lead text-muted mb-4">
-              Streamline your sales, marketing, and customer support with an intelligent
-              CRM platform built for modern teams. Increase productivity by 40% and close
-              deals faster with AI-powered insights.
+            
+            <p 
+              className="lead text-muted mb-4"
+              style={{ 
+                animation: 'fadeInUp 0.6s ease-out 0.4s backwards',
+                fontSize: '1.1rem'
+              }}
+            >
+              Streamline your operations with our integrated suite of CRM, HRM, Invoicing, 
+              and Business Management tools. Increase productivity by 40% and grow faster.
             </p>
 
-            <div className="d-flex flex-column flex-sm-row gap-3 mb-5">
-              <button
-                className="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2"
-                style={{ transition: 'all 0.3s ease', minWidth: '200px' }}
+            {/* Feature List */}
+            <div className="mb-4" style={{ animation: 'fadeInUp 0.6s ease-out 0.6s backwards' }}>
+              <div className="row g-2">
+                {features.map((feature, idx) => (
+                  <div className="col-6" key={idx}>
+                    <div className="d-flex align-items-center gap-2">
+                      <div 
+                        className="d-flex align-items-center justify-content-center rounded-circle"
+                        style={{
+                          width: '24px',
+                          height: '24px',
+                          backgroundColor: '#1E88E5',
+                          color: 'white'
+                        }}
+                      >
+                        <Check size={14} />
+                      </div>
+                      <span className="text-dark fw-semibold" style={{ fontSize: '0.95rem' }}>
+                        {feature}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div 
+              className="d-flex flex-column flex-sm-row gap-3 mb-5"
+              style={{ animation: 'fadeInUp 0.6s ease-out 0.8s backwards' }}
+            >
+              <button 
+                className="btn btn-lg d-flex align-items-center justify-content-center gap-2 shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '14px 32px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-3px)';
+                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(30, 136, 229, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
+                }}
               >
                 Try Free for 14 Days
                 <ArrowRight size={20} />
               </button>
-
-              <button
-                className="btn btn-outline-secondary btn-lg d-flex align-items-center justify-content-center gap-2"
-                style={{ minWidth: '200px' }}
+              
+              <button 
+                className="btn btn-lg d-flex align-items-center justify-content-center gap-2"
+                style={{
+                  backgroundColor: 'white',
+                  color: '#1E88E5',
+                  border: '2px solid #1E88E5',
+                  borderRadius: '12px',
+                  padding: '14px 32px',
+                  fontWeight: '600',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#1E88E5';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.color = '#1E88E5';
+                }}
               >
                 <PlayCircle size={20} />
-                Request Demo
+                Watch Demo
               </button>
             </div>
 
             {/* Stats */}
-            <div className="d-flex flex-wrap gap-4 pt-4 border-top">
+            <div 
+              className="d-flex gap-4 pt-4 border-top"
+              style={{ animation: 'fadeInUp 0.6s ease-out 1s backwards' }}
+            >
               <div>
-                <div className="h4 fw-semibold text-dark mb-1">99.9%</div>
-                <div className="text-muted small">Uptime</div>
+                <h3 className="fw-bold text-dark mb-0">99.9%</h3>
+                <small className="text-muted">Uptime</small>
               </div>
               <div>
-                <div className="h4 fw-semibold text-dark mb-1">10K+</div>
-                <div className="text-muted small">Active Users</div>
+                <h3 className="fw-bold text-dark mb-0">10K+</h3>
+                <small className="text-muted">Active Users</small>
               </div>
               <div>
-                <div className="h4 fw-semibold text-dark mb-1">4.9/5</div>
-                <div className="text-muted small">Rating</div>
+                <h3 className="fw-bold text-dark mb-0">4.9/5</h3>
+                <small className="text-muted">Rating</small>
               </div>
             </div>
           </div>
 
-          {/* Right Content - Dashboard Mockup */}
-          <div className="col-lg-6 order-lg-2 order-1">
-            <div className="position-relative">
-              <div className="rounded-4 overflow-hidden shadow-lg border">
-                <img
-                  src="https://images.unsplash.com/photo-1748609160056-7b95f30041f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                  alt="CRM Dashboard"
-                  className="w-100 h-auto"
-                  style={{ objectFit: 'cover', maxHeight: '450px' }}
-                  onError={(e) =>
-                    (e.currentTarget.src =
-                      'https://via.placeholder.com/1080x600?text=CRM+Dashboard')
-                  }
-                />
-                <div
-                  className="position-absolute top-0 start-0 w-100 h-100"
-                  style={{
-                    background:
-                      'linear-gradient(to top right, rgba(30, 136, 229, 0.1), transparent)',
-                    pointerEvents: 'none',
-                  }}
-                ></div>
-              </div>
+          {/* Right Content - Dashboard Mockup with Image Carousel */}
+          <div className="col-lg-6">
+            <div 
+              className="position-relative"
+              style={{ animation: 'fadeInRight 0.8s ease-out' }}
+            >
+              <div 
+                className="rounded shadow-lg border overflow-hidden position-relative"
+                style={{ borderRadius: '20px' }}
+              >
+                {/* Image Carousel */}
+                <div className="position-relative" style={{ height: '450px' }}>
+                  {images.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`Dashboard ${idx + 1}`}
+                      className="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+                      style={{
+                        opacity: currentImage === idx ? 1 : 0,
+                        transition: 'opacity 1s ease-in-out'
+                      }}
+                    />
+                  ))}
+                  <div 
+                    className="position-absolute top-0 start-0 w-100 h-100"
+                    style={{ 
+                      background: 'linear-gradient(45deg, rgba(30, 136, 229, 0.1), transparent)',
+                      pointerEvents: 'none'
+                    }}
+                  ></div>
+                </div>
 
-              {/* Floating elements */}
-              <div
-                className="position-absolute bg-white rounded-3 shadow-lg p-3 border"
-                style={{ top: '-20px', right: '-20px' }}
+                {/* Carousel Indicators */}
+                <div className="position-absolute bottom-0 start-0 w-100 p-3">
+                  <div className="d-flex justify-content-center gap-2">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        className="border-0 rounded-pill"
+                        style={{
+                          width: currentImage === idx ? '32px' : '8px',
+                          height: '8px',
+                          backgroundColor: currentImage === idx ? '#1E88E5' : 'rgba(255, 255, 255, 0.5)',
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer'
+                        }}
+                        onClick={() => setCurrentImage(idx)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating Card 1 */}
+              <div 
+                className="position-absolute bg-white rounded shadow-lg p-3 border"
+                style={{ 
+                  top: '-20px', 
+                  right: '-20px', 
+                  borderRadius: '16px',
+                  animation: 'float 3s ease-in-out infinite'
+                }}
               >
                 <div className="d-flex align-items-center gap-3">
-                  <div
-                    className="d-flex align-items-center justify-content-center rounded-3"
-                    style={{ width: '40px', height: '40px', backgroundColor: '#d4edda' }}
+                  <div 
+                    className="d-flex align-items-center justify-content-center rounded"
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      background: 'linear-gradient(135deg, #4CAF50, #2E7D32)',
+                      fontSize: '1.5rem'
+                    }}
                   >
-                    <span><ChartLineIcon className="text-primary" size={24} /></span>
+                    📈
                   </div>
                   <div>
-                    <div className="fw-semibold text-dark small">+28%</div>
-                    <div className="text-muted" style={{ fontSize: '0.75rem' }}>
-                      Sales Growth
-                    </div>
+                    <h5 className="fw-bold mb-0 text-dark">+28%</h5>
+                    <small className="text-muted">Sales Growth</small>
                   </div>
                 </div>
               </div>
 
-              <div
-                className="position-absolute bg-white rounded-3 shadow-lg p-3 border"
-                style={{ bottom: '-20px', left: '-20px' }}
+              {/* Floating Card 2 */}
+              <div 
+                className="position-absolute bg-white rounded shadow-lg p-3 border"
+                style={{ 
+                  bottom: '-20px', 
+                  left: '-20px', 
+                  borderRadius: '16px',
+                  animation: 'float 3s ease-in-out infinite 1.5s'
+                }}
               >
                 <div className="d-flex align-items-center gap-3">
-                  <div
-                    className="d-flex align-items-center justify-content-center rounded-3"
-                    style={{ width: '40px', height: '40px', backgroundColor: '#cce5ff' }}
+                  <div 
+                    className="d-flex align-items-center justify-content-center rounded"
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      background: 'linear-gradient(135deg, #1E88E5, #1565C0)',
+                      fontSize: '1.5rem'
+                    }}
                   >
-                    <span><Zap className="text-primary" size={24} /></span>
+                    ⚡
                   </div>
                   <div>
-                    <div className="fw-semibold text-dark small">2.5x</div>
-                    <div className="text-muted" style={{ fontSize: '0.75rem' }}>
-                      Faster Response
-                    </div>
+                    <h5 className="fw-bold mb-0 text-dark">2.5x</h5>
+                    <small className="text-muted">Faster Response</small>
                   </div>
                 </div>
               </div>

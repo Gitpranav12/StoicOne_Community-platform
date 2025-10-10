@@ -6,8 +6,8 @@ export function CTA() {
       className="section-padding position-relative overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #1E88E5 0%, #1976D2 50%, #1565C0 100%)',
-        paddingTop: '120px',
-        paddingBottom: '120px',
+        paddingTop: '30px',
+        paddingBottom: '20px',
         scrollMarginTop: '80px' // prevents overlap with fixed navbar
       }}
     >

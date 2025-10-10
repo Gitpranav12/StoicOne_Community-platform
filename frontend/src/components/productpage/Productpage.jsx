@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ProductDropdown } from './components/ProductDropdown';
@@ -8,8 +8,14 @@ import { Customers } from './components/Customers';
 import { Pricing } from './components/Pricing';
 import { CTA } from './components/CTA';
 import { Footer } from './components/Footer';
+import { CRMPage } from './components/pages/CRMPage';
+import { HRMPage } from './components/pages/HRMPage';
+import { InvoicingPage } from './components/pages/InvoicingPage';
+import { SuitePage } from './components/pages/SuitePage';
 
-export default function Productpage() {
+export default function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+
   useEffect(() => {
     // Bootstrap JS
     const script = document.createElement('script');
@@ -18,35 +24,61 @@ export default function Productpage() {
     document.body.appendChild(script);
 
     // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
+    const handleAnchorClick = (e) => {
+      const target = e.target;
+      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href') || '');
-        if (target) {
-          target.scrollIntoView({
+        const id = target.getAttribute('href')?.substring(1);
+        const element = document.getElementById(id || '');
+        if (element) {
+          element.scrollIntoView({
             behavior: 'smooth',
-            block: 'start'
+            block: 'start',
           });
         }
-      });
-    });
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
 
     return () => {
-      document.body.removeChild(script);
+      if (script.parentNode) {
+        document.body.removeChild(script);
+      }
+      document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
 
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'crm':
+        return <CRMPage onNavigate={setCurrentPage} />;
+      case 'hrm':
+        return <HRMPage onNavigate={setCurrentPage} />;
+      case 'invoicing':
+        return <InvoicingPage onNavigate={setCurrentPage} />;
+      case 'suite':
+        return <SuitePage onNavigate={setCurrentPage} />;
+      default:
+        return (
+          <>
+            <Hero />
+            <ProductDropdown onNavigate={setCurrentPage} />
+            <UseCases />
+            <Features />
+            <Customers />
+            <Pricing />
+            <CTA />
+            <Footer />
+          </>
+        );
+    }
+  };
+
   return (
     <div className="min-vh-100 bg-white">
-      <Navbar />
-      <Hero />
-      <ProductDropdown />
-      <UseCases />
-      <Features />
-      <Customers />
-      <Pricing />
-      <CTA />
-      <Footer />
+      <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
+      {renderPage()}
     </div>
   );
 }
