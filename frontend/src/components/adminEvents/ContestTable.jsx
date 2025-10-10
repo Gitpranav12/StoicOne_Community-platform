@@ -93,7 +93,7 @@ export default function ContestTable({
                 <tr>
                   <th
                     scope="col"
-                    className="cursor-pointer user-select-none"
+                    className="cursor-pointer user-select-none whitespace-nowrap"
                     onClick={() => handleSort("title")}
                   >
                     Contest Title
@@ -129,7 +129,7 @@ export default function ContestTable({
                   </th>
                   <th
                     scope="col"
-                    className="cursor-pointer user-select-none"
+                    className="cursor-pointer user-select-none whitespace-nowrap"
                     onClick={() => handleSort("startDate")}
                   >
                     Start Date
@@ -284,7 +284,7 @@ export default function ContestTable({
         {sortedContests.length === 0 && (
           <div className="text-center py-5">
             <div className="text-muted">
-              <Trophy size={48} className="mb-3 opacity-50" />
+              <Trophy size={48} className="mb-3 opacity-50 mx-auto" />
               <h5>No contests found</h5>
               <p>Create your first contest to get started.</p>
             </div>

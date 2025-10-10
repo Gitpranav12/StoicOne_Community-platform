@@ -12,6 +12,7 @@ import {
 import { Calendar, Clock, Users, HelpCircle, Play } from "lucide-react";
 import Layout from "../../Layout/Layout"; // 1. Import the standard Layout
 import { useNavigate } from "react-router-dom";
+
 const dummyContests = [
   {
     id: 1,
@@ -137,6 +138,7 @@ export default function EventsUserPage() {
               >
                 <Play size={16} className="me-2" /> Contests
               </ToggleButton>
+
               <ToggleButton
                 id="tbg-btn-2"
                 value={"Event"}
@@ -265,6 +267,8 @@ export default function EventsUserPage() {
             </p>
           )}
         </Row>
+
+        
       </div>
     </Layout>
   );

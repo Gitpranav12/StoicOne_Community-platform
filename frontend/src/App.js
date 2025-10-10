@@ -127,14 +127,13 @@ export default function App() {
               <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
 
 
-              {/* <Route path="/scorecard" element={<ScoreCard />} /> */}
-
               {/* Product Page */}
               <Route path="/product" element={<Productpage />} />
               {/* admin events pages routes */}
               <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
               <Route path="/admin/events/createContest" element={<ProtectedRoute><CreateContestForm /></ProtectedRoute>} />
               <Route path="/admin/events/contestDetails" element={<ProtectedRoute><ContestDetails /></ProtectedRoute>} />
+
 
             </Routes>
 
