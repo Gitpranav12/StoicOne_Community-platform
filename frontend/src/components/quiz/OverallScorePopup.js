@@ -45,14 +45,13 @@ export default function OverallScorePopup({
             }}
         >
             {/* Main Score Card Content */}
-            <div
-                className="card shadow-lg p-4 py-md-5"
-                style={{
-                    width: "500px",    
-                    borderRadius: "24px",
-                    background: "#fff",
-                    boxShadow: "0 20px 44px 0 rgba(0,0,10,0.30)",
-                    fontWeight: 500,
+           <div
+                className="card shadow-lg p-6 py-md-6"
+                style={{                  
+                    width: "90%", 
+                    maxWidth: "500px", 
+                    margin: "0px 50px",
+                    borderRadius: "24px",
                 }}
             >
                 
@@ -124,9 +123,9 @@ export default function OverallScorePopup({
                 <h5 className="fw-bold text-center mt-2 mb-2" style={{ color: '#1d273b' }}>Score Breakdown</h5>
                 <ul className="list-group mb-2 mx-auto" style={{ maxWidth: 350 }}>
                     {sectionScores.map((s, index) => (
-                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center py-2" style={{ fontSize: '1rem', fontWeight: 500 }}>
+                        <li key={index} className="list-group-item d-flex justify-content-between align-items-center py-2 " style={{ fontSize: '1rem', fontWeight: 500 }}>
                             {questions[index] ? questions[index].title : `Section ${index + 1}`} 
-                            <span className="badge rounded-pill" style={{ background: '#0d6efd', color: '#ffff' }}>
+                            <span className="badge rounded-pill mx-2" style={{ background: '#0d6efd', color: '#ffff' }}>
                                 {s.score} / {s.total}
                             </span>
                         </li>
