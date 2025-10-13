@@ -8,7 +8,7 @@ export default function ExitPopup({ show, onCancel, onConfirm }) {
   // Wrapped onConfirm to add redirection
   const handleConfirm = () => {
     if(onConfirm) onConfirm(); // call original callback if any
-    navigate("/events"); // redirect to Events page
+    navigate(-1); // redirect to Events page
   };
   if (!show) return null;
   return (
