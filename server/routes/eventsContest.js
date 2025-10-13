@@ -82,10 +82,10 @@ router.get('/:id', async (req, res) => {
           id: q.id,
           title: q.title,
           description: q.description,
-          inputFormat: q.input_format,
-          outputFormat: q.output_format,
-          sampleInput: q.sample_input,
-          sampleOutput: q.sample_output
+          input_format: q.input_format,
+          output_format: q.output_format,
+          sampleInsample_inputput: q.sample_input,
+          sample_output: q.sample_output
         }));
       }
     }
@@ -228,6 +228,56 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+
+
+// Get quiz questions for a specific round
+router.get('/:contestId/round/:roundId/quiz', async (req, res) => {
+  const { contestId, roundId } = req.params;
+  try {
+    // Verify round belongs to contest and is a quiz
+    const [roundRows] = await db.query(
+      'SELECT * FROM rounds WHERE id=? AND contest_id=? AND type="quiz"',
+      [roundId, contestId]
+    );
+
+    if (!roundRows.length) return res.status(404).json({ error: 'Quiz round not found' });
+
+    const [questions] = await db.query(
+      'SELECT * FROM quiz_questions WHERE round_id=?',
+      [roundId]
+    );
+
+    // Transform questions for UI
+    const transformedQuestions = questions.map(q => ({
+      id: q.id,
+      question: q.text,
+      options: [q.option_1, q.option_2, q.option_3, q.option_4],
+      correctAnswerIndex: q.correct_index
+    }));
+
+    // Optional: group by categories (e.g., round_name or logic)
+    res.json({
+      title: roundRows[0].round_name,
+      duration: roundRows[0].duration, // <-- Send duration in minutes
+      questions: transformedQuestions
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
