@@ -79,16 +79,16 @@ export default function App() {
           <Route path="/tags" element={<Tags />} />
           <Route path="/chat" element={<Chat />} />
         </Routes> */}
-          <Routes>
-            <Route path="/" element={<Login />} />
-           <Route path="/login" element={<Login />} />
- 
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* home */}
-            <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
-            <Route path="/admin-dashboard" element={<ProtectedRoute><DashboardHomeAdmin /></ProtectedRoute>} />
-            {/* Admin Dashboard with nested tabs
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+
+              <Route path="/Signup" element={<Signup />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {/* home */}
+              <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
+              <Route path="/admin-dashboard" element={<ProtectedRoute><DashboardHomeAdmin /></ProtectedRoute>} />
+              {/* Admin Dashboard with nested tabs
 =======
             <Routes>
               <Route path="/" element={<Login />} />
@@ -134,10 +134,10 @@ export default function App() {
 
               <Route path="/admin/events" element={<ProtectedRoute><EventsAdminPage /></ProtectedRoute>} />
               <Route path="/events" element={<ProtectedRoute><EventsUserPage /></ProtectedRoute>} />
-              <Route path="/events/contest" element={<ProtectedRoute><ContestPage /></ProtectedRoute>} />
-              <Route path="/events/progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
-              <Route path="/events/code" element={<ProtectedRoute><CodeEditorPage /></ProtectedRoute>} />
-              <Route path="/events/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+              <Route path="/events/contest/:id" element={<ProtectedRoute><ContestPage /></ProtectedRoute>} />
+              <Route path="/events/progress/:id" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
+              <Route path="/events/code/:contestId/:roundId" element={<ProtectedRoute><CodeEditorPage /></ProtectedRoute>} />
+              <Route path="/events/quiz/:contestId/:roundId" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
 
 
               {/* Product Page */}

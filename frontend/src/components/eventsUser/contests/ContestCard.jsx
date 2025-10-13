@@ -58,7 +58,7 @@ export default function ContestCard({ contest }) {
             <Button
               variant="primary"
               className="w-100 d-flex align-items-center justify-content-center gap-2"
-              onClick={() => navigate("/events/contest")}
+               onClick={() => navigate(`/events/contest/${contest.id}`)} // ✅ pass contest.id in route
             >
               <Play size={16} /> Join Contest
             </Button>
