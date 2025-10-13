@@ -64,7 +64,13 @@ export default function ContestsUserPage() {
       try {
         const res = await fetch("http://localhost:8080/api/contests");
         const data = await res.json();
-        setContests(transformContests(data));
+
+        // ✅ Filter out contests with status = "draft"
+        const visibleContests = data.filter(
+          (contest) => contest.status?.toLowerCase() !== "draft"
+        );
+
+        setContests(transformContests(visibleContests));
       } catch (err) {
         console.error("Error fetching contests:", err);
       }
