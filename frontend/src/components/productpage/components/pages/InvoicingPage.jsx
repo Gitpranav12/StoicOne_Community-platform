@@ -4,86 +4,86 @@ export function InvoicingPage({ onNavigate }) {
   const features = [
     {
       icon: <FileText size={48} />,
-      title: 'Invoice Builder',
-      description: 'Create professional invoices in seconds with customizable templates and branding.'
+      title: 'Professional Invoice Creation',
+      description: 'Generate polished, branded invoices with customizable templates and automated client details.'
     },
     {
       icon: <DollarSign size={48} />,
-      title: 'Payment Tracking',
-      description: 'Monitor all payments, track outstanding balances, and automated payment reminders.'
+      title: 'Payment Management',
+      description: 'Track payment statuses, monitor overdue accounts, and automate payment reminder notifications.'
     },
     {
       icon: <BarChart3 size={48} />,
-      title: 'Financial Reports',
-      description: 'Comprehensive financial analytics, cash flow reports, and revenue insights.'
+      title: 'Financial Analytics',
+      description: 'Gain valuable insights with comprehensive financial reporting and revenue performance metrics.'
     },
     {
       icon: <Zap size={48} />,
-      title: 'Automation',
-      description: 'Automated recurring invoices, payment reminders, and follow-up workflows.'
+      title: 'Workflow Automation',
+      description: 'Automate recurring billing, payment follow-ups, and client communication workflows.'
     },
     {
       icon: <CreditCard size={48} />,
-      title: 'Payment Gateway',
-      description: 'Accept payments online with integrated payment processing and multiple methods.'
+      title: 'Integrated Payment Processing',
+      description: 'Seamlessly accept online payments through multiple secure payment gateways.'
     },
     {
       icon: <Globe size={48} />,
-      title: 'Multi-Currency',
-      description: 'Support for multiple currencies with automatic exchange rate calculations.'
+      title: 'Global Currency Support',
+      description: 'Handle international clients with multi-currency support and real-time exchange rate integration.'
     }
   ];
 
   const benefits = [
-    'Get paid 50% faster with automation',
-    'Reduce billing errors by 95%',
-    'Save 10+ hours per week',
-    'Professional branded invoices',
-    'Real-time financial insights',
-    'Automated tax compliance'
+    'Accelerate payment cycles by 50% through automation',
+    'Achieve 95% reduction in billing discrepancies',
+    'Save 10+ hours weekly on administrative tasks',
+    'Deliver consistently branded professional invoices',
+    'Access real-time financial performance dashboards',
+    'Automate tax compliance and reporting requirements'
   ];
 
   const pricing = [
     {
-      name: 'Starter',
-      price: '$19',
+      name: 'Essential',
+      price: '$29',
       period: '/month',
       features: [
-        'Up to 25 invoices/month',
-        'Professional templates',
-        'Payment tracking',
-        'Basic reports',
-        'Email support',
-        '2 users'
+        'Up to 50 invoices monthly',
+        'Professional template library',
+        'Payment status tracking',
+        'Basic financial reporting',
+        'Email support response within 24 hours',
+        'Up to 3 team members'
       ]
     },
     {
       name: 'Professional',
-      price: '$49',
+      price: '$79',
       period: '/month',
       popular: true,
       features: [
-        'Unlimited invoices',
-        'Custom branding',
-        'Recurring invoices',
-        'Advanced reports',
-        'Payment gateway',
-        'Priority support',
-        'Unlimited users'
+        'Unlimited invoice generation',
+        'Custom branding and logo integration',
+        'Automated recurring billing',
+        'Advanced analytics and reporting',
+        'Integrated payment processing',
+        'Priority support with 4-hour response',
+        'Unlimited team collaboration'
       ]
     },
     {
       name: 'Enterprise',
       price: 'Custom',
-      period: 'Contact us',
+      period: 'Tailored pricing',
       features: [
-        'Everything in Pro',
-        'Multi-currency',
-        'Custom integrations',
-        'Dedicated manager',
-        'API access',
-        'White-label',
-        'SLA guarantee'
+        'All Professional features included',
+        'Multi-currency and international tax support',
+        'Custom API integrations',
+        'Dedicated account management',
+        'Full API access and developer support',
+        'White-label solution available',
+        '99.9% uptime SLA guarantee'
       ]
     }
   ];
@@ -91,47 +91,47 @@ export function InvoicingPage({ onNavigate }) {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-warning bg-gradient text-dark py-5">
+      <section className="text-white py-5" style={{ backgroundColor: '#f9c968ff' }}>
         <div className="container py-5 my-5">
           <div className="row align-items-center">
-            <div className="col-lg-6">
-              <div className="badge bg-dark text-warning mb-3 px-3 py-2">
-                Invoicing Solution
+            <div className="col-12 col-lg-6 mb-4 mb-lg-0">
+              <div className="badge bg-white text-warning mb-3 px-3 py-2">
+                Enterprise Invoicing Platform
               </div>
-              <h1 className="display-3 fw-bold mb-4">
-                Get Paid Faster with Smart Invoicing
+              <h1 className="display-4 display-lg-3 fw-bold mb-4">
+                Streamline Your Financial Operations
               </h1>
               <p className="lead mb-4">
-                Professional invoicing and billing software to manage payments, automate recurring 
-                invoices, and track your finances with ease.
+                Advanced invoicing and payment management platform designed to optimize your cash flow, 
+                automate billing processes, and provide comprehensive financial visibility.
               </p>
-              <div className="d-flex gap-3 mb-4">
-                <button className="btn btn-dark btn-lg">
-                  Start Free Trial
+              <div className="d-flex flex-column flex-sm-row gap-2 gap-sm-3 mb-4">
+                <button className="btn btn-dark btn-lg w-100 w-sm-auto">
+                  Begin 30-Day Trial
                 </button>
-                <button className="btn btn-outline-dark btn-lg">
-                  Watch Demo
+                <button className="btn btn-outline-dark btn-lg w-100 w-sm-auto">
+                  Schedule Demo
                 </button>
               </div>
-              <div className="d-flex gap-4 pt-3">
+              <div className="d-flex flex-column flex-sm-row gap-3 pt-3 text-center text-sm-start">
                 <div>
                   <h3 className="fw-bold mb-0">50%</h3>
-                  <small>Faster Payments</small>
+                  <small>Faster Payment Processing</small>
                 </div>
                 <div>
                   <h3 className="fw-bold mb-0">95%</h3>
-                  <small>Accuracy</small>
+                  <small>Reduced Billing Errors</small>
                 </div>
                 <div>
                   <h3 className="fw-bold mb-0">24/7</h3>
-                  <small>Available</small>
+                  <small>Platform Availability</small>
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-12 col-lg-6 text-center">
               <img
-                src="https://images.unsplash.com/photo-1735825764457-ffdf0b5aa5dd?w=800"
-                alt="Invoicing Dashboard"
+                src="https://www.bestinfohub.com/wp-content/uploads/2024/01/demystifying-account-planning.jpg"
+                alt="Hands using invoicing software on desktop"
                 className="img-fluid rounded shadow-lg"
               />
             </div>
@@ -139,48 +139,62 @@ export function InvoicingPage({ onNavigate }) {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-5 bg-light">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <h2 className="display-5 fw-bold mb-3">Powerful Invoicing Features</h2>
-            <p className="lead text-muted">
-              Everything you need to manage invoices and get paid on time
-            </p>
-          </div>
-          <div className="row g-4">
-            {features.map((feature, idx) => (
-              <div className="col-md-6 col-lg-4" key={idx}>
-                <div className="card h-100 border-0 shadow-sm">
-                  <div className="card-body p-4">
-                    <div className="text-warning mb-3">{feature.icon}</div>
-                    <h5 className="card-title fw-bold">{feature.title}</h5>
-                    <p className="card-text text-muted">{feature.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+    {/* Features Section */}
+<section className="py-5 bg-light">
+  <div className="container py-5">
+    <div className="text-center mb-5">
+      <h2 className="display-5 fw-bold mb-3">Comprehensive Billing Solutions</h2>
+      <p className="lead text-muted">
+        Enterprise-grade features to optimize your entire billing lifecycle
+      </p>
+    </div>
+    <div className="row g-4">
+      {features.map((feature, idx) => (
+        <div className="col-12 col-md-6 col-lg-4" key={idx}>
+          <div
+            className="card h-100 border-0 shadow-sm"
+            style={{
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            }}
+          >
+            <div className="card-body p-4 text-center text-md-start">
+              <div className="text-warning mb-3">{feature.icon}</div>
+              <h5 className="card-title fw-bold">{feature.title}</h5>
+              <p className="card-text text-muted">{feature.description}</p>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Benefits Section */}
       <section className="py-5">
         <div className="container py-5">
           <div className="row align-items-center">
-            <div className="col-lg-6 mb-4 mb-lg-0">
+            <div className="col-12 col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
               <img
-                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800"
-                alt="Financial Dashboard"
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800"
+                alt="Financial Team Collaboration"
                 className="img-fluid rounded shadow"
               />
             </div>
-            <div className="col-lg-6">
+            <div className="col-12 col-lg-6">
               <h2 className="display-5 fw-bold mb-4">
-                Why Choose Our Invoicing?
+                Transform Your Financial Operations
               </h2>
               <p className="lead text-muted mb-4">
-                Trusted by finance teams to streamline billing and improve cash flow.
+                Trusted by finance professionals worldwide to enhance efficiency and drive revenue growth.
               </p>
               <ul className="list-unstyled">
                 {benefits.map((benefit, idx) => (
@@ -195,70 +209,100 @@ export function InvoicingPage({ onNavigate }) {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-5 bg-light">
-        <div className="container py-5">
-          <div className="text-center mb-5">
-            <h2 className="display-5 fw-bold mb-3">Simple Pricing</h2>
-            <p className="lead text-muted">
-              Choose the perfect plan for your business
-            </p>
-          </div>
-          <div className="row g-4">
-            {pricing.map((plan, idx) => (
-              <div className="col-md-6 col-lg-4" key={idx}>
-                <div className={`card h-100 ${plan.popular ? 'border-warning shadow-lg' : 'border-0 shadow-sm'}`}>
-                  {plan.popular && (
-                    <div className="card-header bg-warning text-dark text-center py-2 fw-bold">
-                      Most Popular
-                    </div>
-                  )}
-                  <div className="card-body p-4 text-center">
-                    <h4 className="fw-bold mb-3">{plan.name}</h4>
-                    <div className="mb-4">
-                      <h2 className="display-4 fw-bold">{plan.price}</h2>
-                      <small className="text-muted">{plan.period}</small>
-                    </div>
-                    <ul className="list-unstyled mb-4 text-start">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="mb-2">
-                          <CheckCircle size={18} className="text-warning me-2" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <button className={`btn ${plan.popular ? 'btn-warning' : 'btn-outline-warning'} w-100`}>
-                      Get Started
-                    </button>
-                  </div>
-                </div>
+     {/* Pricing Section */}
+<section className="py-5 bg-light">
+  <div className="container py-5">
+    <div className="text-center mb-5">
+      <h2 className="display-5 fw-bold mb-3">Flexible Enterprise Plans</h2>
+      <p className="lead text-muted">
+        Scalable solutions designed to grow with your business
+      </p>
+    </div>
+    <div className="row g-4">
+      {pricing.map((plan, idx) => (
+        <div className="col-12 col-md-6 col-lg-4" key={idx}>
+          <div
+            className={`card h-100 ${plan.popular ? 'border-warning shadow-lg' : 'border-0 shadow-sm'}`}
+            style={{
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            }}
+          >
+            {plan.popular && (
+              <div className="card-header bg-warning text-dark text-center py-2 fw-bold">
+                Most Popular
               </div>
-            ))}
+            )}
+            <div className="card-body p-4 text-center text-md-start">
+              <h4 className="fw-bold mb-3">{plan.name}</h4>
+              <div className="mb-4">
+                <h2 className="display-4 fw-bold">{plan.price}</h2>
+                <small className="text-muted">{plan.period}</small>
+              </div>
+              <ul className="list-unstyled mb-4">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="mb-2 d-flex align-items-center">
+                    <CheckCircle size={18} className="text-warning me-2" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button
+                className={`btn ${plan.popular ? 'btn-warning' : 'btn-outline-warning'} w-100`}
+                style={{
+                  transition: '0.3s',
+                }}
+                onMouseEnter={e => {
+                  if (!plan.popular) {
+                    e.target.style.backgroundColor = '#ffc107';
+                    e.target.style.color = '#212529';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!plan.popular) {
+                    e.target.style.backgroundColor = '';
+                    e.target.style.color = '';
+                  }
+                }}
+              >
+                Select Plan
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
-      <section className="py-5 bg-warning text-dark">
+      <section className="py-5 text-white" style={{ background:"#f9c968ff" }}>
         <div className="container py-5">
           <div className="row justify-content-center text-center">
-            <div className="col-lg-8">
+            <div className="col-12 col-lg-8">
               <h2 className="display-5 fw-bold mb-4">
-                Ready to Streamline Your Billing?
+                Ready to Optimize Your Billing Process?
               </h2>
               <p className="lead mb-4">
-                Start your 14-day free trial today. No credit card required.
+                Experience the platform with our 30-day enterprise trial. No commitment required.
               </p>
               <div className="d-flex gap-3 justify-content-center">
-                <button className="btn btn-dark btn-lg">
-                  Start Free Trial
+                <button className="btn btn-light btn-lg">
+                  Start Enterprise Trial
                   <ArrowRight size={20} className="ms-2" />
                 </button>
-                <button 
-                  className="btn btn-outline-dark btn-lg"
-                  onClick={() => onNavigate('home')}
+                 <button
+                  className="btn btn-outline-light btn-lg"
                 >
-                  Back to Home
+                  Return to Home
                 </button>
               </div>
             </div>
